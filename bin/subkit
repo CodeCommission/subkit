@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+const path = require('path')
+const program = require('commander')
+const chalk = require('chalk')
+const updateNotifier = require('update-notifier')
+const nodeVersion = require('node-version')
+const pkg = require('../package.json')
+
+updateNotifier({pkg}).notify()
+
+if (nodeVersion.major < 6) {
+  console.error(chalk.red(`Error! Reunify requires at least version 6 of NodeJS. Please upgrade your NodeJS version please.`))
+  process.exit(1)
+}
+
+process.on('SIGINT', () => {
+  process.exit(0)
+})
+
+program
+.version(`${pkg.name} v${pkg.version}`)
+.command('create <folder>', 'Creates a Reunify application.')
+.command('serve <folder>', 'Serves a Reunify application.')
+.parse(process.argv)
