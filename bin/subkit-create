@@ -89,7 +89,7 @@ type  Query {
 }
 
 function createResolverTmpl () {
-  return `export const schema = {
+  return `export const resolvers = {
   Query: {
     items: (parent, args, context, info) => [],
   }

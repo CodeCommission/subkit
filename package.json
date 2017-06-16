@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "2.0.0-alpha.8",
+  "version": "2.0.0",
   "description": "GraphQL APIs made fast and easy.",
   "main": "./lib/index.js",
   "bin": {
