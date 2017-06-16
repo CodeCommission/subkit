@@ -1,8 +1,11 @@
 {
   "name": "subkit",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.2",
   "description": "GraphQL APIs made fast and easy.",
   "main": "lib/index.js",
+  "bin": {
+    "subkit": "bin/subkit"
+  },
   "scripts": {
     "test": "mocha --require babel-polyfill --compilers js:babel-register"
   },
