@@ -7,7 +7,7 @@
 * Easy to use and production ready
 * Lightweight and designed to being customizable
 * GraphQL-Schema definition with IDL
-* Full ES6 / ES7 support via Babel
+* Best bits of ES6 and ES7 supported
 * HTTP based GraphQL-Subscriptions
 * Mocked data responses
 * Authentication via JWT
@@ -32,7 +32,7 @@ Serve locally:
 
 ```bash
 cd my-graphql-api
-subkit serve
+npm run dev
 ```
 
 ## How to use it in my project?
