@@ -1,33 +1,36 @@
 #!/usr/bin/env node
 
-const PORT = process.env.PORT
 const NODE_ENV = process.env.NODE_ENV || 'development'
+const JWT_SECRET = process.env.JWT_SECRET
+const MOCKED = process.env.MOCKED
+const PORT = process.env.PORT
+const HOST = process.env.HOST
 const program = require('commander')
 const boxen = require('boxen')
 const chalk = require('chalk')
 const { write } = require('clipboardy')
-
-require('babel-register')({
-  presets: ['stage-0', 'es2015'],
-})
-require('whatwg-fetch')
+require('babel-register')
 
 program
   .option('-h, --host [ip]', 'Host to listen on.')
   .option('-p, --port [port]', 'Port to listen on.')
   .option('-s, --silent', 'Enable silent mode.')
-  .action(() => serve({host: program.host, port: program.port, silent: program.silent}))
+  .option('-j, --secret', 'JWT secret.')
+  .option('-m, --mocked', 'Mock resolver data.')
+  .action(() => serve(program.opts()))
   .parse(process.argv)
 
 if(!program.args.length) serve(program.opts())
 
-function serve({port = PORT || null, host = '0.0.0.0', silent = false}) {
-  require('../lib/server')
-    .start({port, host})
-    .then(({url}) => {
+function serve({port = PORT || null, host = HOST || '0.0.0.0', silent = false, mocked = Boolean(MOCKED), secret = JWT_SECRET}) {
+  require('../lib')
+    .start({port, host, mocked, secret})
+    .then(({url, isSecure}) => {
       if (!silent) {
-        let message = `${chalk.green(`Listing (${NODE_ENV}) on:`)}\n\n`
-        message += `${chalk.gray.bold(`${url}`)}\n\n`
+        let message = `${chalk.green(`Listing (${NODE_ENV})`)}\n\n`
+        if(isSecure) message += `JWT secured: ${chalk.gray.bold(`${isSecure}`)}\n`
+        if(mocked) message += `Mock responses: ${chalk.gray.bold(`${mocked}`)}\n`
+        message += `\n${chalk.gray.bold(`${url}`)}\n\n`
         if (process.stdout.isTTY) {
           write(url)
           message += `${chalk.grey('Address copied to clipboard.')}`

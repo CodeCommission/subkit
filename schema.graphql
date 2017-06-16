@@ -1,7 +1,0 @@
-type Demo {
-  id: ID!
-}
-
-type Query {
-  demos: [Demo]
-}

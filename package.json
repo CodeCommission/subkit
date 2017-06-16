@@ -1,17 +1,20 @@
 {
   "name": "subkit",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0-alpha.0",
+  "description": "GraphQL APIs made fast and easy.",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require babel-polyfill --compilers js:babel-register"
+  },
+  "babel": {
+    "presets": "stage-0,es2015"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CodeCommission/subkit.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Mike Bild <mike@codecommission.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/CodeCommission/subkit/issues"
   },
@@ -30,12 +33,17 @@
     "cors": "^2.8.3",
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
+    "express-jwt": "^5.3.0",
     "fs-extra": "^3.0.1",
     "graphql": "^0.10.1",
     "graphql-tools": "^1.0.0",
+    "node-fetch": "^1.7.1",
     "node-version": "^1.0.0",
     "shelljs": "^0.7.8",
-    "update-notifier": "^2.2.0",
-    "whatwg-fetch": "^2.0.3"
+    "subscriptions-transport-sse": "^0.3.3",
+    "update-notifier": "^2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.2"
   }
 }

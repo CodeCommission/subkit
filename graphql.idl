@@ -1,0 +1,21 @@
+type Item {
+  id: ID!
+  value: String
+}
+
+input ItemInput {
+  id: ID!
+  value: String
+}
+
+type Query {
+  items(id: ID): [Item]
+}
+
+type Mutation {
+  changeItem(input: ItemInput!): Item
+}
+
+type Subscription {
+  onItemChanged: [Item]
+}

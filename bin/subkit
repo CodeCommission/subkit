@@ -10,7 +10,7 @@ const pkg = require('../package.json')
 updateNotifier({pkg}).notify()
 
 if (nodeVersion.major < 6) {
-  console.error(chalk.red(`Error! Reunify requires at least version 6 of NodeJS. Please upgrade your NodeJS version please.`))
+  console.error(chalk.red(`Error! Subkit requires at least version 6 of NodeJS. Please upgrade your NodeJS version please.`))
   process.exit(1)
 }
 
@@ -20,6 +20,6 @@ process.on('SIGINT', () => {
 
 program
 .version(`${pkg.name} v${pkg.version}`)
-.command('create <folder>', 'Creates a Reunify application.')
-.command('serve <folder>', 'Serves a Reunify application.')
+.command('create <folder>', 'Creates a Subkit application.')
+.command('serve', 'Serves a Subkit application.')
 .parse(process.argv)

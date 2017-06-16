@@ -24,23 +24,14 @@ function create ({name = '.', docker, nodeVersion = '6'}) {
   }
   const projectDir = path.resolve(process.cwd(), name)
 
-  if (path.basename(projectDir) === 'pages') {
-    console.error(chalk.red('Your root directory is named "pages". This looks suspicious. You probably want to go one directory up.'))
-    process.exit(1)
-  }
-
   fse.ensureDir(projectDir)
-    .then(() => fse.ensureDir(path.resolve(projectDir, 'static')))
-    .then(() => fse.outputFile(path.resolve(projectDir, 'static', 'manifest.json'), createManifestTmpl({name})))
-    .then(() => fse.outputFile(path.resolve(projectDir, 'static', 'asset-manifest.json'), createAssetsManifestTmpl()))
-    .then(() => fse.copy(path.resolve(__dirname, '..', 'homescreen.png'), path.resolve(projectDir, 'static', 'homescreen.png')))
-    .then(() => fse.outputFile(path.resolve(projectDir, 'pages', 'Index.js'), createIndexPage()))
-    .then(() => fse.outputFile(path.resolve(projectDir, 'pages', 'About.js'), createAboutPage()))
+    .then(() => fse.outputFile(path.resolve(projectDir, 'graphql.idl'), createSchemaTmpl()))
+    .then(() => fse.outputFile(path.resolve(projectDir, 'graphql.js'), createResolverTmpl()))
     .then(() => fse.outputFile(path.resolve(projectDir, 'package.json'), createPackageTmpl({name, nodeVersion})))
     .then(() => docker ? fse.outputFile(path.resolve(projectDir, 'Dockerfile'), createDockerTmpl({name, nodeVersion})) : Promise.resolve())
     .then(() => install({path: projectDir}))
     .then(() => {
-      let message = `${chalk.green(`Universal ReactJS PWA created!`)}\n\n`
+      let message = `${chalk.green(`GraphQL API created!`)}\n\n`
       message += `Serve ${chalk.gray.bold(`${name}`)} with:\n\n`
       message += `Development: ${chalk.gray.bold(`npm run dev`)}\n`
       message += `Production : ${chalk.gray.bold(`npm start`)}`
@@ -57,16 +48,16 @@ function createPackageTmpl ({name, nodeVersion}) {
     "private": true,
     "version": "0.0.0",
     "name": "${name}",
-    "description": "My ReactJS Web-App",
+    "description": "My GraphQL API",
     "engines": {
       "node": "^${nodeVersion}"
     },
     "dependencies": {
-      "reunify": "latest"
+      "subkit": "latest"
     },
     "scripts": {
-      "dev" : "PORT=8080 reunify serve",
-      "start": "PORT=80 NODE_ENV=production reunify serve --silent"
+      "dev" : "subkit serve --port 8080 --mocked --secret SuperSecret",
+      "start": "PORT=80 NODE_ENV=production subkit serve --silent"
     }
   }`
 }
@@ -85,110 +76,12 @@ COPY . /app
 CMD ["npm", "start"]`
 }
 
-function createIndexPage () {
-  return `import React from 'react'
-import { Link } from 'react-router'
-import styled from 'styled-components'
-
-const Title = ({className, text}) => <h1 className={className}>{text}</h1>
-const StyledTitle = styled(Title)\`
-  color: purple;
-\`
-
-export default class Index extends React.Component {
-  render() {
-    return (
-      <div>
-        <StyledTitle text="Index Page" />
-        <ul>
-          <li><Link to={'/about'}>Client-Side Link</Link></li>
-          <li><a href="/about">Server-Side Link (2s delay)</a></li>
-        </ul>
-      </div>
-    )
-  }
-}`
+function createSchemaTmpl () {
+  return ``
 }
 
-function createAboutPage () {
-  return `import React from 'react'
-import { Link } from 'react-router'
-
-export default class About extends React.Component {
-  static async getInitialProps() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({mydata: 'Reunify!'})
-      }, 2000)
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>About Page</h1>
-        <h2>Data: { this.props.mydata }</h2>
-        <ul>
-          <li><Link to={'/'}>Client-Side Back Link</Link></li>
-          <li><a href="/">Server-Server Back Link</a></li>
-        </ul>
-      </div>
-    )
-  }
-}`
-}
-
-function createAssetsManifestTmpl () {
-  return `[
-  "/",
-  "/bundle.js",
-  "/homescreen.png"
-]`
-}
-
-function createManifestTmpl ({name}) {
-  return `{
-  "name": "${name}",
-  "short_name": "${name}",
-  "start_url": "/?homescreen=1",
-  "display": "standalone",
-  "theme_color": "aliceblue",
-  "background_color": "gray",
-  "description": "My ReactJS Web-App",
-  "icons": [{
-    "src": "homescreen.png",
-    "sizes": "48x48",
-    "type": "image/png"
-  }, {
-    "src": "homescreen.png",
-    "sizes": "72x72",
-    "type": "image/png"
-  }, {
-    "src": "homescreen.png",
-    "sizes": "96x96",
-    "type": "image/png"
-  }, {
-    "src": "homescreen.png",
-    "sizes": "144x144",
-    "type": "image/png"
-  }, {
-    "src": "homescreen.png",
-    "sizes": "168x168",
-    "type": "image/png"
-  }, {
-    "src": "homescreen.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }, {
-    "src": "homescreen.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }],
-  "related_applications": [{
-    "platform": "web",
-    "id": "${name}"
-  }]
-}`
+function createResolverTmpl () {
+  return ``
 }
 
 function install ({path}) {
