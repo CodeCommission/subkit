@@ -1,16 +1,16 @@
 {
   "name": "subkit",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.8",
   "description": "GraphQL APIs made fast and easy.",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
   "bin": {
-    "subkit": "bin/subkit"
+    "subkit": "./bin/subkit"
   },
   "scripts": {
     "test": "mocha --require babel-polyfill --compilers js:babel-register"
   },
   "babel": {
-    "presets": "stage-0,es2015"
+    "presets": ["stage-0", "es2015"]
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,6 @@
   "homepage": "https://github.com/CodeCommission/subkit#readme",
   "dependencies": {
     "babel-cli": "^6.22.2",
-    "babel-polyfill": "^6.22.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.22.0",

@@ -6,6 +6,7 @@ const program = require('commander')
 const boxen = require('boxen')
 const chalk = require('chalk')
 const {cd, exec, which} = require('shelljs')
+
 const hasYarn = () => Boolean(which('yarn'))
 
 program
@@ -56,8 +57,8 @@ function createPackageTmpl ({name, nodeVersion}) {
       "subkit": "latest"
     },
     "scripts": {
-      "dev" : "subkit serve --port 8080 --mocked --secret SuperSecret",
-      "start": "PORT=80 NODE_ENV=production subkit serve --silent"
+      "dev" : "subkit serve --port 8080 --mocked ",
+      "start": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent"
     }
   }`
 }
@@ -77,11 +78,30 @@ CMD ["npm", "start"]`
 }
 
 function createSchemaTmpl () {
-  return ``
+  return `type Item {
+  id: ID
+  value: String
+}
+
+type  Query {
+  items(id: ID): [Item]
+}`
 }
 
 function createResolverTmpl () {
-  return ``
+  return `export const schema = {
+  Query: {
+    items: (parent, args, context, info) => [],
+  }
+}
+
+export const loaders = {
+
+}
+
+export const channels = {
+
+}`
 }
 
 function install ({path}) {
