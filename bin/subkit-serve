@@ -29,7 +29,7 @@ function serve({port = PORT || null, host = HOST || '0.0.0.0', silent = false, m
     .start({port, host, mocked, secret})
     .then(({url, isSecure}) => {
       if (!silent) {
-        let message = `${chalk.green(`Listing (${NODE_ENV})`)}\n\n`
+        let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`
         if(isSecure) message += `JWT secured: ${chalk.gray.bold(`${isSecure}`)}\n`
         if(mocked) message += `Mock responses: ${chalk.gray.bold(`${mocked}`)}\n`
         message += `\n${chalk.gray.bold(`${url}`)}\n\n`
