@@ -24,7 +24,7 @@
     "server"
   ],
   "scripts": {
-    "dev": "nodemon --exec ./bin/subkit serve --mocked",
+    "dev": "nodemon -e idl,js --exec ./bin/subkit serve --port 3000",
     "test": "mocha --require babel-polyfill --compilers js:babel-register"
   },
   "babel": {
@@ -39,17 +39,18 @@
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.2",
     "boxen": "^1.2.1",
-    "chalk": "^1.1.3",
+    "chalk": "^2.1.0",
     "clipboardy": "^1.1.4",
     "commander": "^2.11.0",
     "cors": "^2.8.4",
     "express": "^4.16.0",
     "express-graphql": "^0.6.11",
     "express-jwt": "^5.3.0",
-    "fs-extra": "^3.0.1",
-    "graphql": "^0.10.5",
+    "fs-extra": "^4.0.2",
+    "graphql": "^0.11.5",
     "graphql-tools": "^1.2.3",
-    "node-fetch": "^1.7.3",
+    "graphql-type-json": "^0.1.4",
+    "isomorphic-fetch": "^2.2.1",
     "node-version": "^1.1.0",
     "shelljs": "^0.7.8",
     "subscriptions-transport-sse": "^0.4.1",

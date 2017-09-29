@@ -11,6 +11,7 @@ const boxen = require('boxen')
 const chalk = require('chalk')
 const { write } = require('clipboardy')
 require('babel-polyfill')
+require('isomorphic-fetch')
 require('babel-register')({presets: ['env']})
 
 program

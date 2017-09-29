@@ -57,7 +57,7 @@ function createPackageTmpl ({name, nodeVersion}) {
       "subkit": "latest"
     },
     "devDependencies": {
-      "mocha": "^3.4.2",
+      "mocha": "^3.5.3",
       "nodemon": "^1.12.1"
     },
     "scripts": {

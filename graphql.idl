@@ -1,7 +1,6 @@
 type Item {
   id: ID!
   value: String
-  hello: [String]
 }
 
 input ItemInput {
