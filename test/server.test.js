@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import fetch from 'isomorphic-fetch'
 import {equal} from 'assert'
 import {start, stop} from '../lib'
 
@@ -13,7 +13,11 @@ describe('Subkit server integration tests', () => {
       method: 'POST',
       headers: {'content-type': 'application/json'},
       body: JSON.stringify({
-        query: "{items{id}}",
+        query: `{
+          items {
+            id
+          }
+        }`,
         variables: null,
         operationName: null,
       }),

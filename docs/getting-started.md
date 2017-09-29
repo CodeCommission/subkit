@@ -1,6 +1,13 @@
 # SubKit - Getting started
 
-
+* Queries
+  * Schema via IDL
+  * Resolvers
+* Mutations
+* Subscriptions
+* Custom Directives
+* Authentication via JSON Web Token
+* Include as Module
 
 ```graphql
 query all {
