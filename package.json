@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "2.3.0",
+  "version": "2.3.3",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "server"
   ],
   "scripts": {
-    "dev": "nodemon -e idl,js --exec ./bin/subkit serve --port 3000",
+    "dev": "nodemon --ext idl,js --exec ./bin/subkit serve --port 3000 --mocked",
     "test": "mocha --require babel-polyfill --compilers js:babel-register"
   },
   "babel": {
