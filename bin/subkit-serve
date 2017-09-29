@@ -10,8 +10,8 @@ const program = require('commander')
 const boxen = require('boxen')
 const chalk = require('chalk')
 const { write } = require('clipboardy')
-
-require('babel-register')({presets: ['stage-0', 'es2015']})
+require('babel-polyfill')
+require('babel-register')({presets: ['env']})
 
 program
   .option('-h, --host [ip]', 'Host to listen on.')

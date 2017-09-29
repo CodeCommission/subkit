@@ -56,9 +56,14 @@ function createPackageTmpl ({name, nodeVersion}) {
     "dependencies": {
       "subkit": "latest"
     },
+    "devDependencies": {
+      "mocha": "^3.4.2",
+      "nodemon": "^1.12.1"
+    },
     "scripts": {
-      "dev" : "subkit serve --port 8080 --mocked ",
-      "start": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent"
+      "dev" : "nodemon --exec subkit serve --port 8080 --mocked",
+      "start": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent",
+      "test": "mocha --require babel-polyfill --compilers js:babel-register"
     }
   }`
 }
@@ -100,6 +105,10 @@ export const loaders = {
 }
 
 export const channels = {
+
+}
+
+export const directives = {
 
 }`
 }
