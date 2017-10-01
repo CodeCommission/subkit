@@ -11,12 +11,12 @@ export const resolvers = {
     },
   },
   Subscription: {
-    onItemChanged: (parent, args, context, info) => context.loaders.items,
+    onItemChanged: (source, args, context, info) => context.loaders.items.find(x => x.id === source.id)
   },
 }
 
 export const loaders = {
-  items: [{id: 1}, {id: 2}, {id: 3}],
+  items: [{id: 'subkitio', email: 'go@subkit.io'}, {id: 2}, {id: 3}],
 }
 
 export const channels = {

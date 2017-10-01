@@ -63,7 +63,23 @@ export const resolvers = {
 
 ## Resolver Context
 
-Passing query dependencies down to resolvers.
+The resolve function context is provided to every resolver and holds important contextual information like the currently logged in user,access to loaders for data access or the Publish/Subscribe functions.
+
+```javascript
+context = {
+  loaders: {
+    // passed from loaders
+  },
+  user: {
+    // current JWT auth user informations
+  },
+  pubsub: {
+    // pub/sub functions
+  }
+}
+```
+
+Passing loaders to resolver functions.
 
 ```javascript
 export const resolvers = {

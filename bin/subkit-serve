@@ -18,9 +18,9 @@ program
   .option('-h, --host [ip]', 'Host to listen on.')
   .option('-p, --port [port]', 'Port to listen on.')
   .option('-s, --silent', 'Enable silent mode.')
-  .option('-j, --secret', 'JWT secret.')
+  .option('-j, --secret [secret]', 'JWT secret.')
+  .option('-g, --graphiql', 'Enable GraphiQL.')
   .option('-m, --mocked', 'Mock resolver data.')
-  .option('-i, --graphiql', 'Enable GraphiQL.')
   .action(() => serve(program.opts()))
   .parse(process.argv)
 
@@ -32,8 +32,9 @@ function serve({port = PORT || null, host = HOST || '0.0.0.0', silent = false, m
     .then(({url, isSecure}) => {
       if (!silent) {
         let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`
-        if(isSecure) message += `JWT secured: ${chalk.gray.bold(`${isSecure}`)}\n`
-        if(mocked) message += `Mock responses: ${chalk.gray.bold(`${mocked}`)}\n`
+        message += `JWT secured    : ${chalk.gray.bold(`${isSecure}`)}\n`
+        message += `Mock responses : ${chalk.gray.bold(`${mocked}`)}\n`
+        message += `GraphiQL       : ${chalk.gray.bold(`${graphiql}`)}\n`
         message += `\n${chalk.gray.bold(`${url}`)}\n\n`
         if (process.stdout.isTTY) {
           write(url)

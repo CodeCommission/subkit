@@ -1,11 +1,11 @@
 type Item {
   id: ID!
-  value: String
+  email: String
 }
 
 input ItemInput {
   id: ID!
-  value: String
+  email: String
 }
 
 type Query {
@@ -17,5 +17,5 @@ type Mutation {
 }
 
 type Subscription {
-  onItemChanged: [Item]
+  onItemChanged: Item
 }

@@ -24,7 +24,8 @@
     "server"
   ],
   "scripts": {
-    "dev": "nodemon --ext idl,js --exec ./bin/subkit serve --port 3000 --mocked --graphiql",
+    "dev": "nodemon --ext idl,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql",
+    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql",
     "test": "mocha --require babel-polyfill --compilers js:babel-register"
   },
   "babel": {
