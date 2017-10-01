@@ -4,11 +4,15 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 const JWT_SECRET = process.env.JWT_SECRET
 const URL = process.env.URL
 
+const gql = require('graphql-tag')
 const program = require('commander')
 const boxen = require('boxen')
 const chalk = require('chalk')
 const { write } = require('clipboardy')
-require('isomorphic-fetch')
+const fetch = require('isomorphic-fetch')
+const EventSource = require('eventsource')
+const {print} = require('graphql/language/printer')
+const {isString, isObject} = require('lodash')
 
 program
   .option('-u, --url [url]', 'URL to GraphQL-API.')
@@ -22,4 +26,5 @@ if(!program.args.length) request(program.opts())
 
 function request({url = URL, secret = JWT_SECRET, query = '', variables = ''}) {
   console.log(url, secret, query, variables)
+  //
 }
