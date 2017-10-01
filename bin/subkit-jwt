@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+const NODE_ENV = process.env.NODE_ENV || 'development'
+const JWT_SECRET = process.env.JWT_SECRET
+
+const program = require('commander')
+const boxen = require('boxen')
+const chalk = require('chalk')
+const { write } = require('clipboardy')
+
+program
+  .option('-d, --decode [jwt]', 'Decode a JWT.')
+  .option('-e, --encode [json]', 'Encode a JWT using payload in JSON format.')
+  .option('-s, --secret [secret]', 'JWT secret.')
+  .action(() => jwtEnDeCode(program.opts()))
+  .parse(process.argv)
+
+if(!program.args.length) jwtEnDeCode(program.opts())
+
+function jwtEnDeCode({decode, encode, secret = JWT_SECRET}) {
+  console.log(decode, encode, secret)
+}

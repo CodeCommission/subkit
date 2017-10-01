@@ -10,7 +10,7 @@ const pkg = require('../package.json')
 updateNotifier({pkg}).notify()
 
 if (nodeVersion.major < 6) {
-  console.error(chalk.red(`Error! Subkit requires at least version 6 of NodeJS. Please upgrade your NodeJS version please.`))
+  console.error(chalk.red(`Error! SubKit GraphQL-API requires at least version 6 of NodeJS. Please upgrade your NodeJS version please.`))
   process.exit(1)
 }
 
@@ -20,6 +20,8 @@ process.on('SIGINT', () => {
 
 program
 .version(`${pkg.name} v${pkg.version}`)
-.command('create <folder>', 'Creates a Subkit application.')
-.command('serve', 'Serves a Subkit application.')
+.command('create <folder>', 'Creates a GraphQL-API application.').alias('new')
+.command('serve', 'Serves a GraphQL-API application.')
+.command('request', 'Executes GraphQL requests.').alias('req')
+.command('jwt', 'Decodes/Encodes JSON Web Tokens.')
 .parse(process.argv)
