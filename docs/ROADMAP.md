@@ -31,6 +31,10 @@ This document contains a rough outline of a roadmap and a few designs for future
 * Support for simple query timeouts
 * Query whitelisting / stored queries
 * Query batching and caching
+* NPM modularization of:
+  * SubKit GraphQL middleware
+  * SubKit directives
+  * SubKit CLI
 
 ### Future
 

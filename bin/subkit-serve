@@ -20,14 +20,15 @@ program
   .option('-s, --silent', 'Enable silent mode.')
   .option('-j, --secret', 'JWT secret.')
   .option('-m, --mocked', 'Mock resolver data.')
+  .option('-i, --graphiql', 'Enable GraphiQL.')
   .action(() => serve(program.opts()))
   .parse(process.argv)
 
 if(!program.args.length) serve(program.opts())
 
-function serve({port = PORT || null, host = HOST || '0.0.0.0', silent = false, mocked = Boolean(MOCKED), secret = JWT_SECRET}) {
+function serve({port = PORT || null, host = HOST || '0.0.0.0', silent = false, mocked = Boolean(MOCKED), secret = JWT_SECRET, graphiql = false}) {
   require('../lib')
-    .start({port, host, mocked, secret})
+    .start({port, host, mocked, secret, graphiql})
     .then(({url, isSecure}) => {
       if (!silent) {
         let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`
