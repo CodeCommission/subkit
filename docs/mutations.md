@@ -1,6 +1,11 @@
 # Mutations
 
-## Schema
+* [Expand the GraphQL-Schema](#expand-the-graphql-schema)
+* [Implement the resolver functions](#implement-the-resolver-function)
+* [Execute a GraphQL mutation query](#execute-a-graphql-mutation-query)
+* [Usage of GraphQL mutation variables](#usage-of-graphql-mutation-variables)
+
+## Expand the GraphQL-Schema
 
 ```graphql
 # ...
@@ -19,7 +24,7 @@ type Mutation {
 # ...
 ```
 
-## Resolver
+## Implement the resolver function
 
 ```javascript
 export const resolvers = {
@@ -44,17 +49,39 @@ export const loaders = {
 }
 ```
 
-## GraphQL Query
+## Execute a GraphQL mutation query
 
 ```bash
-curl -XPOST 'http://0.0.0.0:8080/graphql' \
-  -H 'Content-Type:application/json' \
-  -H 'Authorization: Bearer YOUR_AUTH_TOKEN' \
-  -d '{"query":"mutation upsertItem{upsertItem(input:{id:\"subkitio\",email:\"go@subkit.io\"}){id email}}"}'
+subkit request \
+  --token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImdvQHN1YmtpdC5pbyJ9.-cVh3sNNCqCZZGdS2jwL_u3aJKXZqNippsMSxj15ROk \
+  --url http://localhost:8080/graphql \
+  --query 'mutation upsertItem{upsertItem(input:{id:\"subkitio\",email:\"go@subkit.io\"}){id email}}'
 ```
 
-## Usage of Query Variables
+## Usage of GraphQL mutation variables
 
 ```graphql
+mutation upsertItem($input: ItemInput!) {
+  upsertItem(input: $input) {
+    id
+    email
+  }
+}
+```
 
+```json
+{
+  "input": {
+    "id": "demo",
+    "email": "demo@aol.com"
+  }
+}
+```
+
+```bash
+subkit request \
+  --token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImdvQHN1YmtpdC5pbyJ9.-cVh3sNNCqCZZGdS2jwL_u3aJKXZqNippsMSxj15ROk \
+  --url http://localhost:8080/graphql \
+  --query 'mutation upsertItem($input: ItemInput!) {upsertItem(input: $input) {id email}}' \
+  --variables '{"input": {"id": "demo", "email": "demo@aol.com"}}'
 ```

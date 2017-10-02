@@ -1,10 +1,8 @@
 # Clients
 
-* cURL
-* HTTP-Fetch
-* SubKit request (TBD)
-* Apollo (TBD)
-* Relay (TBD)
+* [cURL](#curl)
+* [HTTP-Fetch](#http-fetch)
+* [SubKit request](#subkit-request)
 
 ## cURL
 
@@ -30,7 +28,22 @@ fetch('http://0.0.0.0:8080/graphql', {
 .then(response => response.json())
 ```
 
-## subkit request
+## SubKit request
+
+`subkit help request`
+
+```bash
+Usage: subkit-request [options]
+
+
+Options:
+
+  -u, --url [url]         URL to GraphQL-API.
+  -q, --query [query]     GraphQL query.
+  -v, --variables [json]  GraphQL query variables in JSON format.
+  -t, --token [token]     JSON web authorization token.
+  -h, --help              output usage information
+```
 
 ### Query
 
@@ -47,7 +60,7 @@ subkit request \
 subkit request \
   --token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImdvQHN1YmtpdC5pbyJ9.-cVh3sNNCqCZZGdS2jwL_u3aJKXZqNippsMSxj15ROk \
   --url http://localhost:8080/graphql \
-  --query 'mutation changeItem {changeItem(input: {id: "subkitio", email: "go@subkit.io"}) {id email}}'
+  --query 'mutation upsertItem {upsertItem(input: {id: "subkitio", email: "go@subkit.io"}) {id email}}'
 ```
 
 ### Subscription
@@ -56,5 +69,5 @@ subkit request \
 subkit request \
   --token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImdvQHN1YmtpdC5pbyJ9.-cVh3sNNCqCZZGdS2jwL_u3aJKXZqNippsMSxj15ROk \
   --url http://localhost:8080/graphql \
-  --query 'subscription onItemChanged {onItemChanged {id email}}'
+  --query 'subscription onItemUpserted {onItemUpserted {id email}}'
 ```

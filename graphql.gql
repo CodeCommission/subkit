@@ -8,14 +8,15 @@ input ItemInput {
   email: String
 }
 
-type Query {
-  items(id: ID): [Item]
+type  Query {
+  item(id: ID!): Item
+  items: [Item]
 }
 
 type Mutation {
-  changeItem(input: ItemInput!): Item
+  upsertItem(input: ItemInput!): Item
 }
 
 type Subscription {
-  onItemChanged: Item
+  onItemUpserted: Item
 }

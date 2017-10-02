@@ -1,45 +1,11 @@
-# SubKit - Getting started
+# Getting Started
 
-* [Setup](#setup)
-  * Installation
-  * CLI
-* [Queries](queries.md)
-  * Schema via IDL
-  * Build-In Types
-  * Query resolver functions
-  * Resolver context
-  * Usage of Query Variables
-* [Advanced queries](advanced-queries.md)
-* [Clients](clients.md)
-* [Mutations](mutations.md)
-* [Subscriptions](subscriptions.md)
-* [Directives](directives.md)
-  * Build-In
-  * Custom
-* [JSON Web Token (JWT) Authentication](jwt-auth.md)
-* Error Handling (TBD)
-  * Domain errors
-  * Infrastructure errors
-* Instrumentation and Logging (TBD)
-* Testing (TBD)
-* Batching and Caching (TBD)
-* Include as Module (TBD)
+* [Installation](#installation)
+* [CLI](#cli)
+* [Setup a GraphQL-Server](#setup-a-graphql-server)
+* [Programmers Guide](#programmers-guide)
 
-## Setup
-
-### Principles
-
-SubKit GraphQL-Server is built with the following principles in mind:
-
-* By the community, for the community: SubKit GraphQL-Server's development is driven by the needs of developers
-* Simplicity: by keeping things simple, SubKit GraphQL-Server is easier to use, easier to contribute to, and more secure
-* Performance: SubKit GraphQL-Server is well-tested and production-ready - no modifications needed
-* Experience: Front-end / Contract-Driven approach - designed and developed to make front-end and back-end development as efficient as possible.
-* Build-In: All important tools to create and manage GraphQL-API are included.
-
-Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTING.md](../CONTRIBUTING.md), take a look at the [roadmap](ROADMAP.md) and make your first PR!
-
-### Installation
+## Installation
 
 SubKit GraphQL-Server is super easy to set up. Just `npm install -g subkit`, write a GraphQL schema, and then use one of the following snippets to get started. For more info, read the SubKit GraphQL-Server docs.
 
@@ -47,7 +13,7 @@ SubKit GraphQL-Server is super easy to set up. Just `npm install -g subkit`, wri
 npm install -g subkit
 ```
 
-### CLI
+## CLI
 
 ```bash
 subkit help
@@ -72,7 +38,7 @@ Commands:
   help [cmd]           display help for [cmd]
 ```
 
-### Setup a new GraphQL-Server Project
+## Setup a GraphQL-Server
 
 ```bash
 subkit create mygraphql
@@ -82,3 +48,7 @@ npm test #Test environment
 npm run dev #Development environment
 npm start #Production environment
 ```
+
+## Programmers Guide
+
+> coming soon

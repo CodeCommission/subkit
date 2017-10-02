@@ -2,16 +2,17 @@ import {pubsub} from './lib'
 
 export const resolvers = {
   Query: {
+    item: (parent, args, context, info) => context.loaders.items.find(x => x.id == args.id),
     items: (parent, args, context, info) => context.loaders.items,
   },
   Mutation: {
-    changeItem: (parent, args, context, info) => {
-      context.pubsub.publish('itemChangedChannel', args.input)
+    upsertItem: (parent, args, context, info) => {
+      context.pubsub.publish('itemUpsertedChannel', args.input)
       return args.input
     },
   },
   Subscription: {
-    onItemChanged: (source, args, context, info) => context.loaders.items.find(x => x.id === source.id)
+    onItemUpserted: (source, args, context, info) => context.loaders.items.find(x => x.id === source.id)
   },
 }
 
@@ -20,8 +21,8 @@ export const loaders = {
 }
 
 export const channels = {
-  onItemChanged: (options, args) => ({
-    itemChangedChannel: {filter: event => true},
+  onItemUpserted: (options, args) => ({
+    itemUpsertedChannel: {filter: event => true},
   }),
 }
 

@@ -21,22 +21,28 @@ type Subscription {
 export const resolvers = {
   // ...
   Subscription: {
-    onItemUpserted: (source, args, context, info) => context.loaders.items.load(source.id),
+    onItemUpserted: (source, args, context, info) => context.loaders.items.find(x => x.id === source.id)
   },
   // ...
 }
 
 export const channels = {
+  // ...
+  // implementation of event handler and event filter for the pub/sub channel
   onItemUpserted: (options, args) => ({
-    itemsChannel: {filter: event => true},
+    itemUpsertedChannel: {filter: event => true},
   }),
+  // ...
 }
 ```
 
 ### GraphQL Query
 
 ```bash
-subkit request --query ''
+subkit request \
+  --token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImdvQHN1YmtpdC5pbyJ9.-cVh3sNNCqCZZGdS2jwL_u3aJKXZqNippsMSxj15ROk \
+  --url http://localhost:8080/graphql \
+  --query 'subscription onItemUpserted {onItemUpserted {id email}}'
 ```
 
 ## Use Publish/Subscribe programmatically

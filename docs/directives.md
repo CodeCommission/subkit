@@ -1,5 +1,8 @@
 # Directives
 
+* [Build-In](#subkit-build-in)
+* [Programming Custom-Directives](#programming-custom-directives)
+
 GraphQL directives are an extremely powerful mechanism to customize query responses and execution behavior in a declarative way. SubKit GraphQL-Server provides 3 kinds of GraphQL schema directives:
 
 * [GraphQL specification](http://facebook.github.io/graphql/October2016/#sec-Type-System.Directives)
@@ -12,7 +15,7 @@ GraphQL directives are an extremely powerful mechanism to customize query respon
   * @timeLog
 * [Custom directives for GraphQL queries](#custom-directives-for-graphql-queries)
 
-## SubKit build-in
+## SubKit Build-In
 
 ### @mock
 
@@ -137,7 +140,7 @@ query loadItem {
 Resolve time for Item.id: 1ms
 ```
 
-## Custom-Directives for GraphQL-Queries
+## Programming Custom-Directives
 
 ### `@toUpperCase`
 

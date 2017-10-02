@@ -1,10 +1,13 @@
 # Advanced Queries
 
 * [Relational data queries](#relational-data-queries)
+  * [Expand the GraphQL-Schema](#expand-the-graphql-schema)
+  * [Implement the resolver functions](#implement-the-resolver-function)
+  * [Execute a GraphQL query](#execute-a-graphql-query)
 
 ## Relational data queries
 
-### Schema
+### Expand the GraphQL-Schema
 
 ```graphql
 # ...
@@ -23,10 +26,10 @@ type Picture {
 # ...
 ```
 
-### Resolvers
+### Implement the resolver function
 
 ```javascript
-  const crypto = require('crypto');
+const crypto = require('crypto');
 
 export const resolvers = {
   // ...
@@ -40,4 +43,13 @@ export const resolvers = {
   },
   // ...
 }
+```
+
+## Execute a GraphQL query
+
+```bash
+subkit request \
+  --token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImdvQHN1YmtpdC5pbyJ9.-cVh3sNNCqCZZGdS2jwL_u3aJKXZqNippsMSxj15ROk \
+  --url http://localhost:8080/graphql \
+  --query 'query loadItem {item(id: "mikebild") {id email picture {link}}}'
 ```

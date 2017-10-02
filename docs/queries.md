@@ -1,8 +1,14 @@
 # Queries
 
-## Create a GraphQL-Schema via IDL
+* [Create GraphQL-Schema via GQL](#create-graphql-schema-via-gql)
+* [GraphQL Types](#graphql-types)
+* [Implement query resolver functions](#implement-query-resolver-functions)
+* [Usage of resolver function context](#usage-of-resolver-function-context)
+* [Usage of GraphQL query variables](#usage-of-graphql-query-variables)
 
-Edit the `graphql.idl` to add types, queries, mutations and subscriptions.
+## Create GraphQL-Schema via GQL
+
+Edit the `graphql.gql` to add types, queries, mutations and subscriptions.
 
 ```graphql
 # A item type
@@ -13,11 +19,13 @@ type Item {
 
 type Query {
   # Items
-  items(id: ID): [Item]
+  items: [Item]
 }
 ```
 
-## Build-In Types
+## GraphQL Types
+
+SubKit provides all types of the [GraphQL specification](http://facebook.github.io/graphql/October2016/#sec-Types). Additionally the [JSON type](https://github.com/taion/graphql-type-json) is supported.
 
 ### Root types
 
@@ -35,15 +43,11 @@ type Query {
 * NonNull
 * ...
 
-### Custom types
+### Additionally supprted types
 
-* Enum
-* Interface
-* Union
-* JSON
-* ...
+* [JSON](https://github.com/taion/graphql-type-json)
 
-## Resolver functions
+## Implement query resolver functions
 
 Edit the `graphql.js` to implement type, query, mutation und subscription resolvers.
 
@@ -61,7 +65,7 @@ export const resolvers = {
 }
 ```
 
-## Resolver Context
+## Usage of resolver function context
 
 The resolve function context is provided to every resolver and holds important contextual information like the currently logged in user,access to loaders for data access or the Publish/Subscribe functions.
 
@@ -106,8 +110,31 @@ export const loaders = {
 }
 ```
 
-## Usage of Query Variables
+## Usage of GraphQL query variables
+
+The variable definitions are the part that looks like ($id: ID!) in the query above. It works just like the argument definitions for a function in a typed language. All declared variables must be either scalars, enums, or input object types. Variable definitions can be optional or required. When default values are provided for all variables, you can call the query without passing any variables. If any variables are passed as part of the variables dictionary, they will override the defaults.
+
+Usage of query variables:
 
 ```graphql
+query loadItem($id: ID = "subkitio") {
+  item(id: $id) {
+    id
+    email
+  }
+}
+```
 
+```json
+{
+  "id": "subkitio"
+}
+```
+
+```bash
+subkit request \
+  --token eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImdvQHN1YmtpdC5pbyJ9.-cVh3sNNCqCZZGdS2jwL_u3aJKXZqNippsMSxj15ROk \
+  --url http://localhost:8080/graphql \
+  --query 'query loadItem($id: ID!) {item(id: $id) {id email}}' \
+  --variables '{"id": "subkitio"}'
 ```

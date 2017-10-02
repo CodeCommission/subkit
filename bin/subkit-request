@@ -31,7 +31,7 @@ function request({url = URL, token = JWT_TOKEN, query = '', variables = null}) {
 
   if(operationType === 'subscription') {
     let message = chalk.green(`GraphQL-API Subscription to ${chalk.bold(url)}\n\n`)
-    message += chalk.green(`Operation name: ${chalk.bold(operationName)}`)
+    message += chalk.green(`Operation name: ${chalk.bold(operationName || 'N/A')}`)
     console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}))
 
     const manager = subscriptionClient(`http://localhost:8080/subscriptions`, {token})
@@ -85,7 +85,7 @@ function subscriptionClient (url, options = {}) {
     return fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'content-type': 'application/json',
         'authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(options),

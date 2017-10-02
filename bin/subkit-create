@@ -26,7 +26,7 @@ function create ({name = '.', docker, nodeVersion = '6'}) {
   const projectDir = path.resolve(process.cwd(), name)
 
   fse.ensureDir(projectDir)
-    .then(() => fse.outputFile(path.resolve(projectDir, 'graphql.idl'), createSchemaTmpl()))
+    .then(() => fse.outputFile(path.resolve(projectDir, 'graphql.gql'), createSchemaTmpl()))
     .then(() => fse.outputFile(path.resolve(projectDir, 'graphql.js'), createResolverTmpl()))
     .then(() => fse.outputFile(path.resolve(projectDir, 'package.json'), createPackageTmpl({name, nodeVersion})))
     .then(() => docker ? fse.outputFile(path.resolve(projectDir, 'Dockerfile'), createDockerTmpl({name, nodeVersion})) : Promise.resolve())
@@ -61,8 +61,8 @@ function createPackageTmpl ({name, nodeVersion}) {
       "nodemon": "^1.12.1"
     },
     "scripts": {
-      "dev" : "nodemon --ext idl,js --exec subkit serve --port 8080 --graphiql",
-      "dev:mocked" : "nodemon --ext idl,js --exec subkit serve --port 8080 --mocked --graphiql",
+      "dev" : "nodemon --ext gql,js --exec subkit serve --port 8080 --graphiql",
+      "dev:mocked" : "nodemon --ext gql,js --exec subkit serve --port 8080 --mocked --graphiql",
       "start": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent",
       "test": "mocha --require babel-polyfill --compilers js:babel-register"
     }

@@ -1,16 +1,19 @@
-# Subkit
+# Subkit GraphQL-Server
 
 > GraphQL APIs made fast and easy.
+
+[SubKit GraphQL-Server Documentation](docs/README.md)
 
 ## Features
 
 * Easy to use and production ready
 * Lightweight and designed to being customizable
-* GraphQL-Schema definition with IDL
+* GraphQL-Schema definition with GQL
 * Best bits of ES6 and ES7 supported
+* Build-in and custom GraphQL directives (@fetchJSON, @publish, @timeLog, @mock)
 * HTTP based GraphQL-Subscriptions
 * Mocked data responses
-* Authentication via JWT
+* Authentication via JSON Web Token
 * Authorization in execution context
 * CORS enabled
 
@@ -19,10 +22,10 @@
 Firstly, install it:
 
 ```bash
-npm i -g subkit
+npm install -g subkit
 ```
 
-Create your first GraphQL API:
+Create your first GraphQL-Server:
 
 ```bash
 subkit create my-graphql-api
@@ -37,11 +40,11 @@ npm run dev
 
 ## How to use it in my project?
 
-Being stable and inventive and have a look to our [Subkit examples](https://github.com/codecommission/subkit-examples).
+Being stable and inventive and have a look to our [SubKit examples](https://github.com/codecommission/subkit-examples).
 
 ## Contributors
 
-Every participation is welcome. Check them out [here](https://github.com/codecommission/subkit/graphs/contributors).
+Every participation is welcome, just read [CONTRIBUTING](CONTRIBUTING.md), take a look at the [roadmap](docs/ROADMAP.md) and make your first PR!
 
 ## Issue Reporting
 
