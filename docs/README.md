@@ -9,7 +9,7 @@ SubKit GraphQL-Server is built with the following principles in mind:
 * **Experience** Front-end / Contract-Driven approach - designed and developed to make front-end and back-end development as efficient as possible.
 * **Build-In** All important tools to create and manage GraphQL-APIs are available via CLI.
 
-Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTING](../CONTRIBUTING.md) and take a look at the [READMAP](ROADMAP.md).
+Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTING](../CONTRIBUTING.md) and take a look at the [ROADMAP](ROADMAP.md).
 
 * [Guide to Getting Started](getting-started.md)
   * [Installation](getting-started.md#installation)
