@@ -48,7 +48,7 @@ Being stable and inventive and have a look to our [SubKit examples](https://gith
 
 ## Contributors
 
-Every participation is welcome, just read [CONTRIBUTING](CONTRIBUTING.md), take a look at the [READMAP](docs/ROADMAP.md) and make your first PR!
+Every participation is welcome, just read [CONTRIBUTING](CONTRIBUTING.md), take a look at the [ROADMAP](docs/ROADMAP.md) and make your first PR!
 
 ## Issue Reporting
 
