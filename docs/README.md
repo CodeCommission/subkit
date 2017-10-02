@@ -4,13 +4,12 @@
 
 SubKit GraphQL-Server is built with the following principles in mind:
 
-* By the community, for the community: SubKit GraphQL-Server's development is driven by the needs of developers
-* Simplicity: by keeping things simple, SubKit GraphQL-Server is easier to use, easier to contribute to, and more secure
-* Performance: SubKit GraphQL-Server is well-tested and production-ready - no modifications needed
-* Experience: Front-end / Contract-Driven approach - designed and developed to make front-end and back-end development as efficient as possible.
-* Build-In: All important tools to create and manage GraphQL-API are included.
+* **Simplicity** by keeping things simple, SubKit GraphQL-Server is easier to use, easier to contribute to, and more secure
+* **Performance** SubKit GraphQL-Server is well-tested and production-ready - no modifications needed
+* **Experience** Front-end / Contract-Driven approach - designed and developed to make front-end and back-end development as efficient as possible.
+* **Build-In** All important tools to create and manage GraphQL-APIs are available via CLI.
 
-Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTING](../CONTRIBUTING.md) and take a look at the [roadmap](ROADMAP.md).
+Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTING](../CONTRIBUTING.md) and take a look at the [READMAP](ROADMAP.md).
 
 * [Guide to Getting Started](getting-started.md)
   * [Installation](getting-started.md#installation)
