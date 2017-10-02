@@ -8,8 +8,7 @@ This document contains a rough outline of a roadmap and a few designs for future
 
 * GraphQL subscriptions via Server-Side-Events (SSE-Transport)
 * Build-In and custom directives
-  * @fetchJSON, @publish, @mock, @timeLog, @requestJSON
-* Web-Hook endpoint to publish events via HTTP
+  * @fetchJSON, @publish, @mock, @timeLog
 * GraphQL request CLI with subscription support
 * Simplification of API
 
@@ -17,6 +16,10 @@ This document contains a rough outline of a roadmap and a few designs for future
 
 * Performance testing in production settings
 * Enhance documentation and tests
+* more build-in and directives
+  * @requestJSON
+  * @log
+* Web-Hook endpoint to publish events via HTTP
 * Integration guide to:
   * API-Gateway for Micro/Macro-Services and Datebases
   * AWS Lambda
@@ -30,7 +33,8 @@ This document contains a rough outline of a roadmap and a few designs for future
 * Better GraphQL error handling
 * Support for simple query timeouts
 * Query whitelisting / stored queries
-* Query batching and caching
+* GraphQL query batching
+* Resolver batching and caching
 * NPM modularization of:
   * SubKit GraphQL middleware
   * SubKit directives
@@ -39,7 +43,7 @@ This document contains a rough outline of a roadmap and a few designs for future
 ### Future
 
 * Support for @defer, @stream and @live directives
-* Collect traces of query resolvers
+* Collect traces from query resolvers
 
 ## Proposed designs
 

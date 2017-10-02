@@ -2,6 +2,8 @@
 
 > GraphQL APIs made fast and easy.
 
+## Documentation
+
 [SubKit GraphQL-Server Documentation](docs/README.md)
 
 ## Features
@@ -44,7 +46,7 @@ Being stable and inventive and have a look to our [SubKit examples](https://gith
 
 ## Contributors
 
-Every participation is welcome, just read [CONTRIBUTING](CONTRIBUTING.md), take a look at the [roadmap](docs/ROADMAP.md) and make your first PR!
+Every participation is welcome, just read [CONTRIBUTING](CONTRIBUTING.md), take a look at the [READMAP](docs/ROADMAP.md) and make your first PR!
 
 ## Issue Reporting
 
@@ -56,6 +58,6 @@ This project is licensed under the MIT license. See the [LICENSE](LICENSE) file 
 
 ## Thanks
 
-You like this and you want to see what coming next? Follow me on Twitter [`@mikebild`](https://twitter.com/mikebild).
+You like this and you want to see what coming next? Follow us on Twitter [`@subkit_io`](https://twitter.com/subkit_io).
 
 Enjoy!
