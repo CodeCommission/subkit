@@ -1,4 +1,4 @@
-# Subkit GraphQL-Server
+# SubKit GraphQL-Server
 
 > GraphQL APIs made fast and easy.
 
