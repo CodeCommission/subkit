@@ -4,7 +4,8 @@
 
 ## Documentation
 
-[SubKit GraphQL-Server Documentation](docs/README.md)
+* [SubKit GraphQL-Server Documentation](docs/README.md)
+* [Introduction to GraphQL](https://github.com/mikebild/introduction-graphql)
 
 ## Features
 
