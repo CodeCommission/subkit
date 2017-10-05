@@ -63,7 +63,8 @@ function createPackageTmpl ({name, nodeVersion}) {
     "scripts": {
       "dev" : "nodemon --ext gql,js --exec subkit serve --port 8080 --graphiql",
       "dev:mocked" : "nodemon --ext gql,js --exec subkit serve --port 8080 --mocked --graphiql",
-      "start": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent",
+      "start": "NODE_ENV=production subkit serve --port 80 --graphiql",
+      "start:jwt": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent",
       "test": "mocha --require babel-polyfill --compilers js:babel-register"
     }
   }`
@@ -86,17 +87,19 @@ CMD ["npm", "start"]`
 function createSchemaTmpl () {
   return `type Item {
   id: ID
-  value: String
+  email: String
 }
 
 type  Query {
-  items(id: ID): [Item]
+  item(id: ID): Item
+  items: [Item]
 }`
 }
 
 function createResolverTmpl () {
   return `export const resolvers = {
   Query: {
+    item: (parent, args, context, info) => ({}),
     items: (parent, args, context, info) => [],
   }
 }
