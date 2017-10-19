@@ -566,7 +566,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -1358,7 +1358,7 @@ graphql-type-json@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.1.4.tgz#89f13f5d32ce08c9a76c79fdf9c1968384d81a4e"
 
-graphql@^0.11.7:
+graphql@^0.11.6, graphql@^0.11.7:
   version "0.11.7"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.11.7.tgz#e5abaa9cb7b7cccb84e9f0836bf4370d268750c6"
   dependencies:
@@ -2560,6 +2560,15 @@ strip-eof@^1.0.0:
 strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
+
+subscriptions-transport-sse@^0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/subscriptions-transport-sse/-/subscriptions-transport-sse-0.6.3.tgz#cb312593fa6f73c32b22a1aec1f369eb442e2d25"
+  dependencies:
+    babel-runtime "^6.23.0"
+    graphql "^0.11.6"
+    graphql-subscriptions "^0.5.4"
+    lodash "^4.17.4"
 
 supports-color@4.4.0:
   version "4.4.0"

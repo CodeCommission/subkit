@@ -47,6 +47,12 @@ function create({ name = ".", docker, nodeVersion = "6" }) {
         createPackageTmpl({ name, nodeVersion })
       )
     )
+    .then(() =>
+      fse.outputFile(
+        path.resolve(projectDir, "test", "graphql.test.js"),
+        createSpecTmpl()
+      )
+    )
     .then(
       () =>
         docker
@@ -59,9 +65,10 @@ function create({ name = ".", docker, nodeVersion = "6" }) {
     .then(() => install({ path: projectDir }))
     .then(() => {
       let message = `${chalk.green(`GraphQL API created!`)}\n\n`;
-      message += `Serve ${chalk.gray.bold(`${name}`)} with:\n\n`;
+      message += `Run ${chalk.gray.bold(`${name}`)} with:\n\n`;
       message += `Development: ${chalk.gray.bold(`npm run dev`)}\n`;
-      message += `Production : ${chalk.gray.bold(`npm start`)}`;
+      message += `Production : ${chalk.gray.bold(`npm start`)}\n`;
+      message += `Test       : ${chalk.gray.bold(`npm test`)}`;
       console.log(
         boxen(message, { padding: 1, borderColor: "gray", margin: 1 })
       );
@@ -85,8 +92,12 @@ function createPackageTmpl({ name, nodeVersion }) {
       "subkit": "latest"
     },
     "devDependencies": {
+      "babel-preset-env": "^1.6.0",
       "mocha": "^3.5.3",
       "nodemon": "^1.12.1"
+    },
+    "babel": {
+      "presets": ["env"]
     },
     "scripts": {
       "dev" : "nodemon --ext sdl,sdle,js --exec subkit serve --port 8080 --graphiql --analysis 1000",
@@ -124,11 +135,23 @@ type  Query {
 }`;
 }
 
+function createSpecTmpl() {
+  return `import assert from "assert";
+  import { resolvers, loaders } from "../graphql";
+
+  describe("Loaders Spec", () => {
+    it("Should ...", async () => {
+      const actual = await loaders.items();
+      assert.deepEqual(actual, []);
+    });
+  });`;
+}
+
 function createResolverTmpl() {
   return `export const resolvers = {
   Query: {
     item: (parent, args, context, info) => context.loaders.item(args.id),
-    items: (parent, args, context, info) => context.loaders.items(),
+    items: (parent, args, context, info) => context.loaders.items()
   }
 }
 
@@ -137,13 +160,9 @@ export const loaders = {
   item: async id => ({id})
 }
 
-export const channels = {
+export const channels = {}
 
-}
-
-export const directives = {
-
-}`;
+export const directives = {}`;
 }
 
 function install({ path }) {
