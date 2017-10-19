@@ -1,50 +1,78 @@
 #!/usr/bin/env node
 
-const path = require('path')
-const fse = require('fs-extra')
-const program = require('commander')
-const boxen = require('boxen')
-const chalk = require('chalk')
-const {cd, exec, which} = require('shelljs')
+const path = require("path");
+const fse = require("fs-extra");
+const program = require("commander");
+const boxen = require("boxen");
+const chalk = require("chalk");
+const { cd, exec, which } = require("shelljs");
 
-const hasYarn = () => Boolean(which('yarn'))
+const hasYarn = () => Boolean(which("yarn"));
 
 program
-  .arguments('<name>')
-  .option('-d, --docker', 'Include dockerfile (mhart/alpine-node)')
-  .option('-n, --node [version]', 'NodeJS 6/7/8 (mhart/alpine-node)')
-  .action(name => create({name, docker: program.docker, nodeVersion: program.node}))
-  .parse(process.argv)
+  .arguments("<name>")
+  .option("-d, --docker", "Include dockerfile (mhart/alpine-node)")
+  .option("-n, --node [version]", "NodeJS 6/7/8 (mhart/alpine-node)")
+  .action(name =>
+    create({ name, docker: program.docker, nodeVersion: program.node })
+  )
+  .parse(process.argv);
 
-if(!program.args.length) create({})
+if (!program.args.length) create({});
 
-function create ({name = '.', docker, nodeVersion = '6'}) {
-  if(!name) {
-    console.error(chalk.red('Enter a project name.'))
-    process.exit(1)
+function create({ name = ".", docker, nodeVersion = "6" }) {
+  if (!name) {
+    console.error(chalk.red("Enter a project name."));
+    process.exit(1);
   }
-  const projectDir = path.resolve(process.cwd(), name)
+  const projectDir = path.resolve(process.cwd(), name);
 
-  fse.ensureDir(projectDir)
-    .then(() => fse.outputFile(path.resolve(projectDir, 'graphql.gql'), createSchemaTmpl()))
-    .then(() => fse.outputFile(path.resolve(projectDir, 'graphql.js'), createResolverTmpl()))
-    .then(() => fse.outputFile(path.resolve(projectDir, 'package.json'), createPackageTmpl({name, nodeVersion})))
-    .then(() => docker ? fse.outputFile(path.resolve(projectDir, 'Dockerfile'), createDockerTmpl({name, nodeVersion})) : Promise.resolve())
-    .then(() => install({path: projectDir}))
+  fse
+    .ensureDir(projectDir)
+    .then(() =>
+      fse.outputFile(
+        path.resolve(projectDir, "graphql.sdl"),
+        createSchemaTmpl()
+      )
+    )
+    .then(() =>
+      fse.outputFile(
+        path.resolve(projectDir, "graphql.js"),
+        createResolverTmpl()
+      )
+    )
+    .then(() =>
+      fse.outputFile(
+        path.resolve(projectDir, "package.json"),
+        createPackageTmpl({ name, nodeVersion })
+      )
+    )
+    .then(
+      () =>
+        docker
+          ? fse.outputFile(
+              path.resolve(projectDir, "Dockerfile"),
+              createDockerTmpl({ name, nodeVersion })
+            )
+          : Promise.resolve()
+    )
+    .then(() => install({ path: projectDir }))
     .then(() => {
-      let message = `${chalk.green(`GraphQL API created!`)}\n\n`
-      message += `Serve ${chalk.gray.bold(`${name}`)} with:\n\n`
-      message += `Development: ${chalk.gray.bold(`npm run dev`)}\n`
-      message += `Production : ${chalk.gray.bold(`npm start`)}`
-      console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}))
+      let message = `${chalk.green(`GraphQL API created!`)}\n\n`;
+      message += `Serve ${chalk.gray.bold(`${name}`)} with:\n\n`;
+      message += `Development: ${chalk.gray.bold(`npm run dev`)}\n`;
+      message += `Production : ${chalk.gray.bold(`npm start`)}`;
+      console.log(
+        boxen(message, { padding: 1, borderColor: "gray", margin: 1 })
+      );
     })
     .catch(err => {
-      console.error(chalk.red(`An unexpected error occured. ${err.message}`))
-      process.exit(1)
-    })
+      console.error(chalk.red(`An unexpected error occured. ${err.message}`));
+      process.exit(1);
+    });
 }
 
-function createPackageTmpl ({name, nodeVersion}) {
+function createPackageTmpl({ name, nodeVersion }) {
   return `{
     "private": true,
     "version": "0.0.0",
@@ -61,16 +89,16 @@ function createPackageTmpl ({name, nodeVersion}) {
       "nodemon": "^1.12.1"
     },
     "scripts": {
-      "dev" : "nodemon --ext gql,js --exec subkit serve --port 8080 --graphiql",
-      "dev:mocked" : "nodemon --ext gql,js --exec subkit serve --port 8080 --mocked --graphiql",
-      "start": "NODE_ENV=production subkit serve --port 80 --graphiql",
-      "start:jwt": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent",
+      "dev" : "nodemon --ext sdl,sdle,js --exec subkit serve --port 8080 --graphiql --analysis 1000",
+      "dev:mocked" : "nodemon --ext sdl,sdle,js --exec subkit serve --port 8080 --mocked --graphiql --analysis 1000",
+      "start": "NODE_ENV=production subkit serve --port 80 --graphiql --analysis 1000",
+      "start:jwt": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent --analysis 1000",
       "test": "mocha --require babel-polyfill --compilers js:babel-register"
     }
-  }`
+  }`;
 }
 
-function createDockerTmpl ({name, nodeVersion}) {
+function createDockerTmpl({ name, nodeVersion }) {
   return `FROM mhart/alpine-node:${nodeVersion}
 ENV PORT=80
 ENV NODE_ENV=production
@@ -81,31 +109,32 @@ WORKDIR /app
 COPY package.json /app
 RUN npm install --production
 COPY . /app
-CMD ["npm", "start"]`
+CMD ["npm", "start"]`;
 }
 
-function createSchemaTmpl () {
+function createSchemaTmpl() {
   return `type Item {
   id: ID
   email: String
 }
 
 type  Query {
-  item(id: ID): Item
+  item(id: ID!): Item
   items: [Item]
-}`
+}`;
 }
 
-function createResolverTmpl () {
+function createResolverTmpl() {
   return `export const resolvers = {
   Query: {
-    item: (parent, args, context, info) => ({}),
-    items: (parent, args, context, info) => [],
+    item: (parent, args, context, info) => context.loaders.item(args.id),
+    items: (parent, args, context, info) => context.loaders.items(),
   }
 }
 
 export const loaders = {
-
+  items: async () => [],
+  item: async id => ({id})
 }
 
 export const channels = {
@@ -114,17 +143,17 @@ export const channels = {
 
 export const directives = {
 
-}`
+}`;
 }
 
-function install ({path}) {
+function install({ path }) {
   return new Promise((resolve, reject) => {
-    cd(path)
-    const installCmd = hasYarn() ? 'yarn' : 'npm install'
+    cd(path);
+    const installCmd = hasYarn() ? "yarn" : "npm install";
 
     exec(installCmd, (code, stdout, stderr) => {
-      if (code !== 0) return reject(stderr)
-      resolve()
-    })
-  })
+      if (code !== 0) return reject(stderr);
+      resolve();
+    });
+  });
 }

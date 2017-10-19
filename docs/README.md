@@ -17,7 +17,7 @@ Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTIN
   * [Setup a GraphQL-Server](getting-started.md#setup-a-graphql-server)
   * [Programmers Guide](getting-started.md#programmers-guide)
 * [Queries](queries.md)
-  * [Create GraphQL-Schema via GQL](queries.md#create-graphql-schema-via-gql)
+  * [Create GraphQL-Schema via SDL](queries.md#create-graphql-schema-via-sdl)
   * [GraphQL Types](queries.md#graphql-types)
   * [Implement query resolver functions](queries.md#implement-query-resolver-functions)
   * [Usage of resolver function context](queries.md#usage-of-resolver-function-context)

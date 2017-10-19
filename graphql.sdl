@@ -1,0 +1,28 @@
+type Demo {
+  id: ID @complexity(cost: 10)
+  foo: String @complexity(cost: 10)
+}
+
+type Item {
+  id: ID!
+  email: String
+  demos(take: Int, skip: Int): [Demo] @complexity(multiplier: "take")
+}
+
+type  Query {
+  item(id: ID!): Item
+  items(take: Int, skip: Int): [Item]
+}
+
+input ItemInput {
+  id: ID!
+  email: String
+}
+
+type Mutation {
+  upsertItem(input: ItemInput!): Item
+}
+
+type Subscription {
+  onItemUpserted: Item
+}

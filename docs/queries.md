@@ -1,14 +1,14 @@
 # Queries
 
-* [Create GraphQL-Schema via GQL](#create-graphql-schema-via-gql)
+* [Create GraphQL-Schema via SDL](#create-graphql-schema-via-sdl)
 * [GraphQL Types](#graphql-types)
 * [Implement query resolver functions](#implement-query-resolver-functions)
 * [Usage of resolver function context](#usage-of-resolver-function-context)
 * [Usage of GraphQL query variables](#usage-of-graphql-query-variables)
 
-## Create GraphQL-Schema via GQL
+## Create GraphQL-Schema via SDL
 
-Edit the `graphql.gql` to add types, queries, mutations and subscriptions.
+Edit the `graphql.SDL` to add types, queries, mutations and subscriptions.
 
 ```graphql
 # A item type

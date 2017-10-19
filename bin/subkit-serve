@@ -1,51 +1,74 @@
 #!/usr/bin/env node
 
-const NODE_ENV = process.env.NODE_ENV || 'development'
-const JWT_SECRET = process.env.JWT_SECRET
-const MOCKED = process.env.MOCKED
-const PORT = process.env.PORT
-const HOST = process.env.HOST
+const NODE_ENV = process.env.NODE_ENV || "development";
+const JWT_SECRET = process.env.JWT_SECRET;
+const MOCKED = process.env.MOCKED;
+const PORT = process.env.PORT;
+const HOST = process.env.HOST;
 
-const program = require('commander')
-const boxen = require('boxen')
-const chalk = require('chalk')
-const { write } = require('clipboardy')
-require('babel-polyfill')
-require('isomorphic-fetch')
-require('babel-register')({presets: ['env']})
+const program = require("commander");
+const boxen = require("boxen");
+const chalk = require("chalk");
+const { write } = require("clipboardy");
+require("babel-polyfill");
+require("isomorphic-fetch");
+require("babel-register")({ presets: ["env"] });
 
 program
-  .option('-h, --host [ip]', 'Host to listen on.')
-  .option('-p, --port [port]', 'Port to listen on.')
-  .option('-s, --silent', 'Enable silent mode.')
-  .option('-j, --secret [secret]', 'JWT secret.')
-  .option('-g, --graphiql', 'Enable GraphiQL.')
-  .option('-m, --mocked', 'Mock resolver data.')
+  .option("-h, --host [ip]", "Host to listen on.")
+  .option("-p, --port [port]", "Port to listen on.")
+  .option("-s, --silent", "Enable silent mode.")
+  .option("-j, --secret [secret]", "JWT secret.")
+  .option("-g, --graphiql", "Enable GraphiQL.")
+  .option("-m, --mocked", "Mock resolver data.")
+  .option("-a, --analysis [int]", "Enable query complexity analysis.")
   .action(() => serve(program.opts()))
-  .parse(process.argv)
+  .parse(process.argv);
 
-if(!program.args.length) serve(program.opts())
+if (!program.args.length) serve(program.opts());
 
-function serve({port = PORT || null, host = HOST || '0.0.0.0', silent = false, mocked = Boolean(MOCKED), secret = JWT_SECRET, graphiql = false}) {
-  require('../lib')
-    .start({port, host, mocked, secret, graphiql})
-    .then(({url, isSecure}) => {
+function serve({
+  port = PORT || null,
+  host = HOST || "0.0.0.0",
+  silent = false,
+  analysis = 0,
+  mocked = Boolean(MOCKED),
+  secret = JWT_SECRET,
+  graphiql = false
+}) {
+  require("../lib")
+    .start({
+      port,
+      host,
+      mocked,
+      secret,
+      graphiql,
+      analysis: parseInt(analysis)
+    })
+    .then(({ url, isSecure }) => {
       if (!silent) {
-        let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`
-        message += `JWT secured    : ${chalk.gray.bold(`${isSecure}`)}\n`
-        message += `Mock responses : ${chalk.gray.bold(`${mocked}`)}\n`
-        message += `GraphiQL       : ${chalk.gray.bold(`${graphiql}`)}\n`
-        message += `\n${chalk.gray.bold(`${url}`)}\n\n`
+        let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`;
+        message += `JWT secured    : ${chalk.gray.bold(`${isSecure}`)}\n`;
+        message += `Mock responses : ${chalk.gray.bold(`${mocked}`)}\n`;
+        message += `Query analysis : ${chalk.gray.bold(
+          `${Boolean(analysis)}`
+        )}\n`;
+        if (analysis)
+          message += `Complexity max : ${chalk.gray.bold(`${analysis}`)}\n`;
+        message += `GraphiQL       : ${chalk.gray.bold(`${graphiql}`)}\n`;
+        message += `\n${chalk.gray.bold(`${url}`)}\n\n`;
         if (process.stdout.isTTY) {
-          write(url)
-          message += `${chalk.grey('Address copied to clipboard.')}`
+          write(url);
+          message += `${chalk.grey("Address copied to clipboard.")}`;
         }
-        console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}))
+        console.log(
+          boxen(message, { padding: 1, borderColor: "gray", margin: 1 })
+        );
       }
     })
-    .catch((err) => {
-      console.error(chalk.red('An unexpected error occurred.'))
-      console.error(err.stack)
-      process.exit(1)
-    })
+    .catch(err => {
+      console.error(chalk.red("An unexpected error occurred."));
+      console.error(err.stack);
+      process.exit(1);
+    });
 }

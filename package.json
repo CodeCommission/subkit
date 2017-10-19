@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "2.4.2",
+  "version": "3.0.1",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -16,22 +16,18 @@
   "bin": {
     "subkit": "./bin/subkit"
   },
-  "keywords": [
-    "http",
-    "graphql",
-    "subscription",
-    "directive",
-    "server"
-  ],
+  "keywords": ["http", "graphql", "subscription", "directive", "server"],
   "scripts": {
-    "dev": "nodemon --ext gql,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql",
-    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql",
+    "dev":
+      "nodemon --ext sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000",
+    "dev:mocked":
+      "nodemon --ext sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
+    "start":
+      "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
     "test": "mocha --require babel-polyfill --compilers js:babel-register"
   },
   "babel": {
-    "presets": [
-      "env"
-    ]
+    "presets": ["env"]
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -46,26 +42,27 @@
     "cors": "^2.8.4",
     "es6-template-strings": "^2.0.1",
     "eventsource": "^1.0.5",
-    "express": "^4.16.0",
+    "express": "^4.16.2",
     "express-graphql": "^0.6.11",
     "express-jwt": "^5.3.0",
     "fs-extra": "^4.0.2",
-    "graphql": "^0.11.5",
+    "graphql": "^0.11.7",
+    "graphql-query-complexity": "^0.1.1",
     "graphql-subscriptions": "^0.4.4",
-    "graphql-tag": "^2.4.2",
-    "graphql-tools": "^1.2.3",
+    "graphql-tag": "^2.5.0",
+    "graphql-tools": "^2.5.1",
     "graphql-type-json": "^0.1.4",
     "isomorphic-fetch": "^2.2.1",
     "json-query": "^2.2.2",
-    "jsonwebtoken": "^8.0.1",
+    "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
     "node-version": "^1.1.0",
     "shelljs": "^0.7.8",
     "subscriptions-transport-sse": "^0.5.3",
-    "update-notifier": "^2.2.0"
+    "update-notifier": "^2.3.0"
   },
   "devDependencies": {
-    "mocha": "^3.5.3",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1"
   }
 }

@@ -12,7 +12,7 @@
 
 * Easy to use and production ready
 * Lightweight and designed to being customizable
-* GraphQL-Schema definition with GQL
+* GraphQL-Schema definition with SDL
 * Best bits of ES6 and ES7 supported
 * Build-in and custom GraphQL directives (@fetchJSON, @publish, @timeLog, @mock)
 * HTTP based GraphQL-Subscriptions
