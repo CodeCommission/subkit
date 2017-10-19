@@ -1,12 +1,6 @@
-type Demo {
-  id: ID @complexity(cost: 10)
-  foo: String @complexity(cost: 10)
-}
-
 type Item {
   id: ID!
   email: String
-  demos(take: Int, skip: Int): [Demo] @complexity(multiplier: "take")
 }
 
 type  Query {

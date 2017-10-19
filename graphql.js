@@ -1,11 +1,4 @@
-import { pubsub } from "./lib";
-import { GraphQLInt, GraphQLString, GraphQLNonNull } from "graphql";
-import { DirectiveLocation } from "graphql/type/directives";
-
 export const resolvers = {
-  Item: {
-    demos: (parent, args, context, info) => [{ id: 1 }, { id: 2 }]
-  },
   Query: {
     item: (parent, args, context, info) =>
       context.loaders.items.find(x => x.id == args.id),
@@ -24,7 +17,7 @@ export const resolvers = {
 };
 
 export const loaders = {
-  items: [{ id: "subkitio", email: "go@subkit.io" }, { id: 2 }, { id: 3 }]
+  items: [{ id: 1, email: "go@subkit.io" }, { id: 2 }, { id: 3 }]
 };
 
 export const channels = {
