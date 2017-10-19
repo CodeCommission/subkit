@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/graphql@^0.9.1":
-  version "0.9.4"
-  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.9.4.tgz#cdeb6bcbef9b6c584374b81aa7f48ecf3da404fa"
-
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -570,7 +566,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -992,7 +988,7 @@ es6-promise@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
 
-es6-promise@^4.0.5:
+es6-promise@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.1.tgz#8811e90915d9a0dba36274f0b242dbda78f9c92a"
 
@@ -1339,13 +1335,12 @@ graphql-query-complexity@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.1.1.tgz#a4dc9b517bbe7d0a3847a207a1aad1f42343cb5e"
 
-graphql-subscriptions@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/graphql-subscriptions/-/graphql-subscriptions-0.4.4.tgz#39cff32d08dd3c990113864bab77154403727e9b"
+graphql-subscriptions@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/graphql-subscriptions/-/graphql-subscriptions-0.5.4.tgz#efb9374bdf505acad3c262bcd8bc61da085a198b"
   dependencies:
-    "@types/graphql" "^0.9.1"
-    es6-promise "^4.0.5"
-    iterall "^1.1.1"
+    es6-promise "^4.1.1"
+    iterall "^1.1.3"
 
 graphql-tag@^2.5.0:
   version "2.5.0"
@@ -1363,7 +1358,7 @@ graphql-type-json@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.1.4.tgz#89f13f5d32ce08c9a76c79fdf9c1968384d81a4e"
 
-graphql@^0.11.6, graphql@^0.11.7:
+graphql@^0.11.7:
   version "0.11.7"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.11.7.tgz#e5abaa9cb7b7cccb84e9f0836bf4370d268750c6"
   dependencies:
@@ -1620,7 +1615,7 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-iterall@1.1.3, iterall@^1.1.1:
+iterall@1.1.3, iterall@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.1.3.tgz#1cbbff96204056dde6656e2ed2e2226d0e6d72c9"
 
@@ -2565,15 +2560,6 @@ strip-eof@^1.0.0:
 strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
-
-subscriptions-transport-sse@^0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/subscriptions-transport-sse/-/subscriptions-transport-sse-0.5.3.tgz#7681c747bf76ea1e5b193e8019df90acb018fe7d"
-  dependencies:
-    babel-runtime "^6.23.0"
-    graphql "^0.11.6"
-    graphql-subscriptions "^0.4.4"
-    lodash "^4.17.4"
 
 supports-color@4.4.0:
   version "4.4.0"
