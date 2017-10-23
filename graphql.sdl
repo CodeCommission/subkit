@@ -3,8 +3,11 @@ type Item {
   email: String
 }
 
+# Root queries
 type  Query {
+  # Item by ID
   item(id: ID!): Item
+  # All items
   items(take: Int, skip: Int): [Item]
 }
 
