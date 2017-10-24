@@ -12,7 +12,7 @@ export const resolvers = {
   },
   Subscription: {
     onItemUpserted: (source, args, context, info) =>
-      context.loaders.items.find(x => x.id === source.id)
+      context.loaders.items.find(x => x.id == source.id)
   }
 };
 

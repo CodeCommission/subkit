@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -58,7 +58,7 @@
     "lodash": "^4.17.4",
     "node-version": "^1.1.0",
     "shelljs": "^0.7.8",
-    "subscriptions-transport-sse": "^0.6.3",
+    "subscriptions-transport-sse": "^0.6.4",
     "update-notifier": "^2.3.0"
   },
   "devDependencies": {
