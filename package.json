@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "3.1.6",
+  "version": "3.1.7",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -16,18 +16,23 @@
   "bin": {
     "subkit": "./bin/subkit"
   },
-  "keywords": ["http", "graphql", "subscription", "directive", "server"],
+  "keywords": [
+    "http",
+    "graphql",
+    "subscription",
+    "directive",
+    "server"
+  ],
   "scripts": {
-    "dev":
-      "nodemon --ext sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000",
-    "dev:mocked":
-      "nodemon --ext sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
-    "start":
-      "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
+    "dev": "nodemon --ext sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000",
+    "dev:mocked": "nodemon --ext sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
+    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
     "test": "mocha --require babel-polyfill --compilers js:babel-register"
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -58,11 +63,18 @@
     "lodash": "^4.17.4",
     "node-version": "^1.1.0",
     "shelljs": "^0.7.8",
+    "subkit-graphiql": "^0.1.4",
     "subscriptions-transport-sse": "^0.6.4",
     "update-notifier": "^2.3.0"
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^2.0.0",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
