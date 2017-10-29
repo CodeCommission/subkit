@@ -52,7 +52,7 @@ function serve({
       if (!silent) {
         let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`;
         message += `JWT secured    : ${chalk.gray.bold(`${isSecure}`)}\n`;
-        message += `Extentions : ${chalk.gray.bold(`${extentions}`)}\n`;
+        message += `Extentions     : ${chalk.gray.bold(`${extentions}`)}\n`;
         message += `Mock responses : ${chalk.gray.bold(`${mocked}`)}\n`;
         message += `Query analysis : ${chalk.gray.bold(
           `${Boolean(analysis)}`
