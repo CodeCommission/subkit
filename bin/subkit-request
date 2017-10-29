@@ -41,6 +41,14 @@ function request({
       process.exit(1);
     }
   }
+  try {
+    variables = JSON.parse(variables);
+  } catch (e) {
+    console.error(
+      chalk.red(`GraphQL variables error: ${chalk.bold(e.message)}`)
+    );
+    process.exit(1);
+  }
   const operationName =
     operation ||
     ((((queryDef || {}).definitions || {})[0] || {}).name || {}).value;
