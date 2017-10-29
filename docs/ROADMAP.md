@@ -8,7 +8,7 @@ This document contains a rough outline of a roadmap and a few designs for future
 
 * GraphQL subscriptions via Server-Side-Events (SSE-Transport)
 * Build-In and custom directives
-  * @fetchJSON, @publish, @mock, @timeLog
+  * @fetchJSON, @publish, @mock
 * GraphQL request CLI with subscription support
 * Simplification of API
 

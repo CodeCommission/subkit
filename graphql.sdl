@@ -1,6 +1,12 @@
+type Value {
+  some: String
+}
+
 type Item {
-  id: ID!
-  email: String
+  id: ID! @complexity(cost: 11) @cacheControl(maxAge: 22)
+  email: String @complexity(cost: 12)
+  items: [Item]
+  value: Value
 }
 
 # Root queries
@@ -8,7 +14,7 @@ type  Query {
   # Item by ID
   item(id: ID!): Item
   # All items
-  items(take: Int, skip: Int): [Item]
+  items(take: Int, skip: Int): [Item] @complexity(multiplier: "take") @cacheControl(maxAge: 30)
 }
 
 input ItemInput {

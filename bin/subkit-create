@@ -84,7 +84,7 @@ function createPackageTmpl({ name, nodeVersion }) {
     "private": true,
     "version": "0.0.0",
     "name": "${name}",
-    "description": "My GraphQL API",
+    "description": "My ${name} GraphQL-API",
     "engines": {
       "node": "^${nodeVersion}"
     },
@@ -93,18 +93,18 @@ function createPackageTmpl({ name, nodeVersion }) {
     },
     "devDependencies": {
       "babel-preset-env": "^1.6.0",
-      "mocha": "^3.5.3",
+      "mocha": "^4.0.1",
       "nodemon": "^1.12.1"
     },
     "babel": {
       "presets": ["env"]
     },
     "scripts": {
-      "dev" : "nodemon --ext sdl,sdle,js --exec subkit serve --port 8080 --graphiql --analysis 1000",
-      "dev:mocked" : "nodemon --ext sdl,sdle,js --exec subkit serve --port 8080 --mocked --graphiql --analysis 1000",
+      "dev" : "nodemon --ext  gql,sdl,sdle,js --exec subkit serve --port 8080 --graphiql --analysis 1000",
+      "dev:mocked" : "nodemon --ext  gql,sdl,sdle,js --exec subkit serve --port 8080 --mocked --graphiql --analysis 1000",
       "start": "NODE_ENV=production subkit serve --port 80 --graphiql --analysis 1000",
       "start:jwt": "NODE_ENV=production subkit serve --port 80 --secret SuperSecret --silent --analysis 1000",
-      "test": "mocha --require babel-polyfill --compilers js:babel-register"
+      "test": "mocha --require babel-polyfill --require babel-register"
     }
   }`;
 }

@@ -1,148 +1,195 @@
 #!/usr/bin/env node
 
-const NODE_ENV = process.env.NODE_ENV || 'development'
-const JWT_TOKEN = process.env.JWT_TOKEN
-const URL = process.env.URL
+const NODE_ENV = process.env.NODE_ENV || "development";
+const JWT_TOKEN = process.env.JWT_TOKEN;
+const URL = process.env.URL;
 
-const gql = require('graphql-tag')
-const program = require('commander')
-const boxen = require('boxen')
-const chalk = require('chalk')
-const {write} = require('clipboardy')
-const fetch = require('isomorphic-fetch')
-const EventSource = require('eventsource')
-const {print} = require('graphql/language/printer')
-const {isString, isObject} = require('lodash')
+const gql = require("graphql-tag");
+const program = require("commander");
+const boxen = require("boxen");
+const chalk = require("chalk");
+const { write } = require("clipboardy");
+const fetch = require("isomorphic-fetch");
+const EventSource = require("eventsource");
+const { print } = require("graphql/language/printer");
+const { isString, isObject } = require("lodash");
 
 program
-  .option('-u, --url [url]', 'URL to GraphQL-API.')
-  .option('-q, --query [query]', 'GraphQL query.')
-  .option('-v, --variables [json]', 'GraphQL query variables in JSON format.')
-  .option('-t, --token [token]', 'JSON web authorization token.')
+  .option("-u, --url [url]", "URL to GraphQL-API.")
+  .option("-q, --query [query]", "GraphQL query.")
+  .option("-o, --operation [name]", "GraphQL operation name.")
+  .option("-v, --variables [json]", "GraphQL query variables in JSON format.")
+  .option("-t, --token [token]", "JSON web authorization token.")
   .action(() => request(program.opts()))
-  .parse(process.argv)
+  .parse(process.argv);
 
-if(!program.args.length) request(program.opts())
+if (!program.args.length) request(program.opts());
 
-function request({url = URL, token = JWT_TOKEN, query = '', variables = null}) {
-  const queryDef = gql`${query}`
-  const operationName = ((((queryDef || {}).definitions || {})[0] || {}).name || {}).value
-  const operationType = (((queryDef || {}).definitions || {})[0] || {}).operation
-
-  if(operationType === 'subscription') {
-    let message = chalk.green(`GraphQL-API Subscription to ${chalk.bold(url)}\n\n`)
-    message += chalk.green(`Operation name: ${chalk.bold(operationName || 'N/A')}`)
-    console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}))
-
-    const manager = subscriptionClient(`http://localhost:8080/subscriptions`, {token})
-    manager.subscribe({operationName, query, variables}, (error, evt) => {
-      if(error) return chalk.red(console.error(err))
-      console.log(chalk.green(`--------- Event received ---------\n${JSON.stringify(evt, null, 2)}`))
-    })
+function request({
+  url = URL,
+  token = JWT_TOKEN,
+  query,
+  operation = "",
+  variables = null
+}) {
+  let queryDef = null;
+  if (!operation) {
+    try {
+      queryDef = gql`${query}`;
+    } catch (e) {
+      console.error(chalk.red(`GraphQL query error: ${chalk.bold(e.message)}`));
+      process.exit(1);
+    }
   }
-  if(operationType !== 'subscription') {
+  const operationName =
+    operation ||
+    ((((queryDef || {}).definitions || {})[0] || {}).name || {}).value;
+  const operationType = (((queryDef || {}).definitions || {})[0] || {})
+    .operation;
+
+  if (operationType === "subscription") {
+    let message = chalk.green(
+      `GraphQL-API Subscription to ${chalk.bold(url)}\n\n`
+    );
+    message += chalk.green(
+      `Operation name: ${chalk.bold(operationName || "N/A")}`
+    );
+    console.log(boxen(message, { padding: 1, borderColor: "gray", margin: 1 }));
+
+    const manager = subscriptionClient(`http://localhost:8080/subscriptions`, {
+      token
+    });
+    manager.subscribe({ operationName, query, variables }, (error, evt) => {
+      if (error) return chalk.red(console.error(err));
+      console.log(
+        chalk.green(
+          `--------- Event received ---------\n${JSON.stringify(evt, null, 2)}`
+        )
+      );
+    });
+  }
+  if (operationType !== "subscription") {
     fetch(url, {
-      method: 'post',
+      method: "post",
       headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${token}`,
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         operationName,
         query,
-        variables,
-      }),
+        variables
+      })
     })
-    .then(response => {
-      if(response.status !== 200) return Promise.reject(`GraphQL-API response error: ${response.statusText}`)
-      return response.json()
-    })
-    .then(data => {
-      let message = chalk.green(`GraphQL-API Query to ${chalk.bold(url)}\n\n`)
-      message += chalk.green(`Operation name: ${chalk.bold(operationName)}\n`)
-      message += chalk.green(`Response:\n`)
-      message += chalk.green(`${JSON.stringify(data, null, 2)}`)
-      console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}))
-      process.exit(0)
-    })
-    .catch(error => {
-      console.error(chalk.red(error))
-      process.exit(1)
-    })
+      .then(response => {
+        if (response.status !== 200)
+          return Promise.reject(
+            `GraphQL-API response error: ${response.statusText}`
+          );
+        return response.json();
+      })
+      .then(data => {
+        let message = chalk.green(
+          `GraphQL-API Query to ${chalk.bold(url)}\n\n`
+        );
+        message += chalk.green(
+          `Operation name: ${chalk.bold(operationName)}\n`
+        );
+        message += chalk.green(`Response:\n`);
+        message += chalk.green(`${JSON.stringify(data, null, 2)}`);
+        console.log(
+          boxen(message, { padding: 1, borderColor: "gray", margin: 1 })
+        );
+        process.exit(0);
+      })
+      .catch(error => {
+        console.error(chalk.red(error));
+        process.exit(1);
+      });
   }
 }
 
-function subscriptionClient (url, options = {}) {
-  const {timeout = 1000, token} = options
-  const subscriptions = {}
+function subscriptionClient(url, options = {}) {
+  const { timeout = 1000, token } = options;
+  const subscriptions = {};
 
   function subscribe(options, handler) {
-    const {query, variables, operationName, context} = options
-    if (!query) throw new Error('Must provide `query` to subscribe.')
-    if (!handler) throw new Error('Must provide `handler` to subscribe.')
-    if (!isString(query) || (operationName && !isString(operationName)) || (variables && !isObject(variables))) throw new Error('Incorrect option types to subscribe. `subscription` must be a string, `operationName` must be a string, and `variables` must be an object.')
+    const { query, variables, operationName, context } = options;
+    if (!query) throw new Error("Must provide `query` to subscribe.");
+    if (!handler) throw new Error("Must provide `handler` to subscribe.");
+    if (
+      !isString(query) ||
+      (operationName && !isString(operationName)) ||
+      (variables && !isObject(variables))
+    )
+      throw new Error(
+        "Incorrect option types to subscribe. `subscription` must be a string, `operationName` must be a string, and `variables` must be an object."
+      );
 
     return fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${token}`,
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`
       },
       body: JSON.stringify(options),
-      timeout,
+      timeout
     })
-    .then(res => res.json())
-    .then(data => {
-      const subId = data.subId
-      const evtSource = new EventSource(`${url}/${subId}`, {headers: {'authorization': `Bearer ${token}`}})
-      subscriptions[subId] = {options, handler, evtSource}
+      .then(res => res.json())
+      .then(data => {
+        const subId = data.subId;
+        const evtSource = new EventSource(`${url}/${subId}`, {
+          headers: { authorization: `Bearer ${token}` }
+        });
+        subscriptions[subId] = { options, handler, evtSource };
 
-      evtSource.onmessage = e => {
-        const message = JSON.parse(e.data)
-        switch(message.type) {
-          case 'SUBSCRIPTION_DATA':
-            subscriptions[subId].handler(null, message.data)
-            break
-          case 'KEEPALIVE':
-            break
-        }
-
-        evtSource.onerror = e => {
-          console.error(`EventSource connection failed for subscription ID: ${subId}. Retry.`)
-          if(subscriptions[subId] && subscriptions[subId].evtSource) {
-            subscriptions[subId].evtSource.close()
+        evtSource.onmessage = e => {
+          const message = JSON.parse(e.data);
+          switch (message.type) {
+            case "SUBSCRIPTION_DATA":
+              subscriptions[subId].handler(null, message.data);
+              break;
+            case "KEEPALIVE":
+              break;
           }
-          delete subscriptions[subId]
-          setTimeout(() => subscribe(options, handler), 1000)
-        }
-      }
-      return subId
-    })
-    .catch(error => {
-      console.error(`${error.message}. Subscription failed. Retry.`)
-      setTimeout(() => subscribe(options, handler), 1000)
-    })
+
+          evtSource.onerror = e => {
+            console.error(
+              `EventSource connection failed for subscription ID: ${subId}. Retry.`
+            );
+            if (subscriptions[subId] && subscriptions[subId].evtSource) {
+              subscriptions[subId].evtSource.close();
+            }
+            delete subscriptions[subId];
+            setTimeout(() => subscribe(options, handler), 1000);
+          };
+        };
+        return subId;
+      })
+      .catch(error => {
+        console.error(`${error.message}. Subscription failed. Retry.`);
+        setTimeout(() => subscribe(options, handler), 1000);
+      });
   }
 
   function unsubscribe(subscription) {
-    subscription
-    .then(subId => {
-      if(subscriptions[subId] && subscriptions[subId].evtSource) {
-        subscriptions[subId].evtSource.close()
+    subscription.then(subId => {
+      if (subscriptions[subId] && subscriptions[subId].evtSource) {
+        subscriptions[subId].evtSource.close();
       }
-      delete subscriptions[subId]
-    })
+      delete subscriptions[subId];
+    });
   }
 
   function unsubscribeAll() {
     Object.keys(subscriptions).forEach(subId => {
-      unsubscribe(parseInt(subId))
-    })
+      unsubscribe(parseInt(subId));
+    });
   }
 
   return {
     subscribe,
     unsubscribe,
-    unsubscribeAll,
-  }
+    unsubscribeAll
+  };
 }

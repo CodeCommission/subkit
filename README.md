@@ -14,12 +14,14 @@
 * Lightweight and designed to being customizable
 * GraphQL-Schema definition with SDL
 * Best bits of ES6 and ES7 supported
-* Build-in and custom GraphQL directives (@fetchJSON, @publish, @timeLog, @mock)
-* HTTP based GraphQL-Subscriptions
+* Build-in and custom GraphQL directives (@fetchJSON, @publish, @mock, @execute)
+* HTTP based GraphQL-Subscriptions over Server-Side-Events
+* GraphiQL enhancements
 * Mocked data responses
 * Authentication via JSON Web Token
 * Authorization in execution context
-* CORS enabled
+* Query resolver cache control, resolver run time and complexity analysis
+* Persistent queries
 
 ## Setup & Run
 

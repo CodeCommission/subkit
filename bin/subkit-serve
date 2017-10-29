@@ -22,6 +22,7 @@ program
   .option("-g, --graphiql", "Enable GraphiQL.")
   .option("-m, --mocked", "Mock resolver data.")
   .option("-a, --analysis [int]", "Enable query complexity analysis.")
+  .option("-e, --extentions", "Enable query extentions.")
   .action(() => serve(program.opts()))
   .parse(process.argv);
 
@@ -34,7 +35,8 @@ function serve({
   analysis = 0,
   mocked = Boolean(MOCKED),
   secret = JWT_SECRET,
-  graphiql = false
+  graphiql = false,
+  extentions = false
 }) {
   require("../lib")
     .start({
@@ -43,12 +45,14 @@ function serve({
       mocked,
       secret,
       graphiql,
-      analysis: parseInt(analysis)
+      analysis: parseInt(analysis),
+      extentions
     })
     .then(({ url, isSecure }) => {
       if (!silent) {
         let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`;
         message += `JWT secured    : ${chalk.gray.bold(`${isSecure}`)}\n`;
+        message += `Extentions : ${chalk.gray.bold(`${extentions}`)}\n`;
         message += `Mock responses : ${chalk.gray.bold(`${mocked}`)}\n`;
         message += `Query analysis : ${chalk.gray.bold(
           `${Boolean(analysis)}`
@@ -66,9 +70,16 @@ function serve({
         );
       }
     })
-    .catch(err => {
+    .catch(e => {
       console.error(chalk.red("An unexpected error occurred."));
-      console.error(err.stack);
+      console.error(
+        JSON.stringify({
+          message: e.message,
+          error: e,
+          stack: e.stack,
+          type: "Error"
+        })
+      );
       process.exit(1);
     });
 }

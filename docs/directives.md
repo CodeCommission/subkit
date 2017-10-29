@@ -12,7 +12,6 @@ GraphQL directives are an extremely powerful mechanism to customize query respon
   * @mock
   * @fetchJSON
   * @publish
-  * @timeLog
 * [Custom directives for GraphQL queries](#custom-directives-for-graphql-queries)
 
 ## SubKit Build-In
@@ -122,22 +121,6 @@ mutation upsertItem {
     email
   }
 }
-```
-
-### @timeLog
-
-Console output of query resolve time on field level in ms.
-
-```graphql
-query loadItem {
-  item(id: "mikebild") {
-    id @timeLog
-  }
-}
-```
-
-```bash
-Resolve time for Item.id: 1ms
 ```
 
 ## Programming Custom-Directives
