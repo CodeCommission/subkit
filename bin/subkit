@@ -30,4 +30,5 @@ program
   .command('request', 'Executes GraphQL requests.')
   .alias('req')
   .command('jwt', 'Decodes/Encodes JSON Web Tokens.')
+  .command('metric', 'Collect and aggregate log outputs.')
   .parse(process.argv);

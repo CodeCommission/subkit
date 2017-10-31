@@ -1,0 +1,115 @@
+#!/usr/bin/env node
+
+const {writeFile, ensureFile, readJson} = require('fs-extra');
+const path = require('path');
+const JSONStream = require('JSONStream');
+const through = require('through');
+const metricFilePath = path.resolve(process.cwd(), 'metric.json');
+const reduce = function(fn, acc) {
+  if (arguments.length < 2) {
+    throw new Error('Initial value must be given');
+  }
+
+  return through(
+    function(data) {
+      acc = fn(acc, data);
+      this.emit('data', acc);
+    },
+    function() {
+      this.emit('end');
+    }
+  );
+};
+
+const reducer = init =>
+  reduce(
+    (acc, data) => {
+      if (data.operation === '-') return acc;
+
+      try {
+        data.extentionsJSON =
+          data.extentionsJSON === '-' ? {} : JSON.parse(data.extentionsJSON);
+        data.errorsJSON =
+          data.errorsJSON === '-' ? [] : JSON.parse(data.errorsJSON);
+      } catch (e) {}
+
+      // last entry
+      acc.last = data;
+
+      // errors
+      if (data.errorsJSON && data.errorsJSON.length) acc.errors += 1;
+
+      // sums
+      acc.timestamp = new Date().toISOString();
+      acc.length += parseInt(data.length) || 0;
+      acc.count += 1;
+      acc._accResponseTimeMS += parseFloat(data.responseTimeMs);
+      acc.avgResponseTimeMS = Math.round(acc._accResponseTimeMS / acc.count);
+      if (data.extentionsJSON) {
+        acc._accScore += data.extentionsJSON.score;
+        acc.avgScore = Math.round(acc._accScore / acc.count);
+      }
+
+      // methods
+      if (!acc.http.method[data.method]) acc.http.method[data.method] = 0;
+      acc.http.method[data.method] += 1;
+
+      // url
+      if (!acc.http.url[data.url]) acc.http.url[data.url] = 0;
+      acc.http.url[data.url] += 1;
+
+      // status
+      if (!acc.http.status[data.status]) acc.http.status[data.status] = 0;
+      acc.http.status[data.status] += 1;
+
+      // user agent
+      if (!acc.http.userAgent[data.userAgent])
+        acc.http.userAgent[data.userAgent] = 0;
+      acc.http.userAgent[data.userAgent] += 1;
+
+      // GraphQL operation
+      if (!acc.graphql.operation[data.operation])
+        acc.graphql.operation[data.operation] = 0;
+      acc.graphql.operation[data.operation] += 1;
+
+      return acc;
+    },
+    Object.assign(
+      {
+        timestamp: new Date().toISOString(),
+        count: 0,
+        errors: 0,
+        length: 0,
+        avgResponseTimeMS: 0,
+        _accResponseTimeMS: 0,
+        avgScore: 0,
+        _accScore: 0,
+        last: {},
+        http: {
+          status: {},
+          method: {},
+          url: {},
+          userAgent: {}
+        },
+        graphql: {
+          operation: {}
+        }
+      },
+      init
+    )
+  );
+
+ensureFile(metricFilePath).then(() =>
+  readJson(metricFilePath, {throws: false}).then(initalData => {
+    process.stdin
+      .pipe(JSONStream.parse())
+      .pipe(reducer(initalData))
+      .on('data', data => {
+        const output = Object.assign({}, data);
+        delete output._accResponseTimeMS;
+        delete output._accScore;
+        const outputJSON = JSON.stringify(output);
+        writeFile(metricFilePath, outputJSON);
+      });
+  })
+);

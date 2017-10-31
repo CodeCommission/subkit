@@ -16,20 +16,24 @@
   "bin": {
     "subkit": "./bin/subkit"
   },
-  "keywords": ["http", "graphql", "subscription", "directive", "server"],
+  "keywords": [
+    "http",
+    "graphql",
+    "subscription",
+    "directive",
+    "server"
+  ],
   "scripts": {
-    "dev":
-      "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000 --extentions",
-    "dev:mocked":
-      "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
-    "start":
-      "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
-    "test":
-      "mocha --require babel-polyfill --require babel-register 2>/dev/null",
+    "dev": "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000 --extentions",
+    "dev:mocked": "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
+    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
+    "test": "mocha --require babel-polyfill --require babel-register 2>/dev/null",
     "commit": "git-cz"
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -57,6 +61,8 @@
     "json-query": "^2.2.2",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
+    "morgan": "^1.9.0",
+    "morgan-json": "^1.1.0",
     "node-version": "^1.1.0",
     "shelljs": "^0.7.8",
     "subkit-graphiql": "^0.1.6",
