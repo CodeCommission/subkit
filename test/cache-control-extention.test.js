@@ -1,12 +1,12 @@
-import { deepEqual } from "assert";
+import {deepEqual} from 'assert';
 
-import { GraphQLSchema, graphql } from "graphql";
+import {GraphQLSchema, graphql} from 'graphql';
 
 import {
   enableGraphQLExtensions,
   GraphQLExtensionStack
-} from "../lib/extentions";
-import { CacheControlExtension } from "../lib/cache-control-extention";
+} from '../lib/extentions';
+import {CacheControlExtension} from '../lib/cache-control-extention';
 
 export async function collectCacheControlHints(schema, source) {
   enableGraphQLExtensions(schema);
@@ -26,10 +26,10 @@ export async function collectCacheControlHints(schema, source) {
   return cacheControlExtension.format()[1].hints;
 }
 
-import { buildSchema } from "graphql";
+import {buildSchema} from 'graphql';
 
-describe("@cacheControl directives", () => {
-  it("should set maxAge: 0 and no scope for a field without cache hints", async () => {
+describe('@cacheControl directives', () => {
+  it('should set maxAge: 0 and no scope for a field without cache hints', async () => {
     const schema = buildSchema(`
     type Query {
       droid(id: ID!): Droid
@@ -52,9 +52,9 @@ describe("@cacheControl directives", () => {
     `
     );
 
-    deepEqual(hints, [{ path: ["droid"], maxAge: 0 }]);
+    deepEqual(hints, [{path: ['droid'], maxAge: 0}]);
   });
-  it("should set the specified maxAge from a cache hint on the field", async () => {
+  it('should set the specified maxAge from a cache hint on the field', async () => {
     const schema = buildSchema(`
       type Query {
         droid(id: ID!): Droid @cacheControl(maxAge: 60)
@@ -77,10 +77,10 @@ describe("@cacheControl directives", () => {
       `
     );
 
-    deepEqual(hints, [{ path: ["droid"], maxAge: 60 }]);
+    deepEqual(hints, [{path: ['droid'], maxAge: 60}]);
   });
 
-  it("should set the specified maxAge for a field from a cache hint on the target type", async () => {
+  it('should set the specified maxAge for a field from a cache hint on the target type', async () => {
     const schema = buildSchema(`
       type Query {
         droid(id: ID!): Droid
@@ -103,6 +103,6 @@ describe("@cacheControl directives", () => {
       `
     );
 
-    deepEqual(hints[0], { path: ["droid"], maxAge: 60 });
+    deepEqual(hints[0], {path: ['droid'], maxAge: 60});
   });
 });

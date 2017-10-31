@@ -1,28 +1,28 @@
 #!/usr/bin/env node
 
-const path = require("path");
-const fse = require("fs-extra");
-const program = require("commander");
-const boxen = require("boxen");
-const chalk = require("chalk");
-const { cd, exec, which } = require("shelljs");
+const path = require('path');
+const fse = require('fs-extra');
+const program = require('commander');
+const boxen = require('boxen');
+const chalk = require('chalk');
+const {cd, exec, which} = require('shelljs');
 
-const hasYarn = () => Boolean(which("yarn"));
+const hasYarn = () => Boolean(which('yarn'));
 
 program
-  .arguments("<name>")
-  .option("-d, --docker", "Include dockerfile (mhart/alpine-node)")
-  .option("-n, --node [version]", "NodeJS 6/7/8 (mhart/alpine-node)")
+  .arguments('<name>')
+  .option('-d, --docker', 'Include dockerfile (mhart/alpine-node)')
+  .option('-n, --node [version]', 'NodeJS 6/7/8 (mhart/alpine-node)')
   .action(name =>
-    create({ name, docker: program.docker, nodeVersion: program.node })
+    create({name, docker: program.docker, nodeVersion: program.node})
   )
   .parse(process.argv);
 
 if (!program.args.length) create({});
 
-function create({ name = ".", docker, nodeVersion = "6" }) {
+function create({name = '.', docker, nodeVersion = '6'}) {
   if (!name) {
-    console.error(chalk.red("Enter a project name."));
+    console.error(chalk.red('Enter a project name.'));
     process.exit(1);
   }
   const projectDir = path.resolve(process.cwd(), name);
@@ -31,25 +31,25 @@ function create({ name = ".", docker, nodeVersion = "6" }) {
     .ensureDir(projectDir)
     .then(() =>
       fse.outputFile(
-        path.resolve(projectDir, "graphql.sdl"),
+        path.resolve(projectDir, 'graphql.sdl'),
         createSchemaTmpl()
       )
     )
     .then(() =>
       fse.outputFile(
-        path.resolve(projectDir, "graphql.js"),
+        path.resolve(projectDir, 'graphql.js'),
         createResolverTmpl()
       )
     )
     .then(() =>
       fse.outputFile(
-        path.resolve(projectDir, "package.json"),
-        createPackageTmpl({ name, nodeVersion })
+        path.resolve(projectDir, 'package.json'),
+        createPackageTmpl({name, nodeVersion})
       )
     )
     .then(() =>
       fse.outputFile(
-        path.resolve(projectDir, "test", "graphql.test.js"),
+        path.resolve(projectDir, 'test', 'graphql.test.js'),
         createSpecTmpl()
       )
     )
@@ -57,21 +57,19 @@ function create({ name = ".", docker, nodeVersion = "6" }) {
       () =>
         docker
           ? fse.outputFile(
-              path.resolve(projectDir, "Dockerfile"),
-              createDockerTmpl({ name, nodeVersion })
+              path.resolve(projectDir, 'Dockerfile'),
+              createDockerTmpl({name, nodeVersion})
             )
           : Promise.resolve()
     )
-    .then(() => install({ path: projectDir }))
+    .then(() => install({path: projectDir}))
     .then(() => {
       let message = `${chalk.green(`GraphQL API created!`)}\n\n`;
       message += `Run ${chalk.gray.bold(`${name}`)} with:\n\n`;
       message += `Development: ${chalk.gray.bold(`npm run dev`)}\n`;
       message += `Production : ${chalk.gray.bold(`npm start`)}\n`;
       message += `Test       : ${chalk.gray.bold(`npm test`)}`;
-      console.log(
-        boxen(message, { padding: 1, borderColor: "gray", margin: 1 })
-      );
+      console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}));
     })
     .catch(err => {
       console.error(chalk.red(`An unexpected error occured. ${err.message}`));
@@ -79,7 +77,7 @@ function create({ name = ".", docker, nodeVersion = "6" }) {
     });
 }
 
-function createPackageTmpl({ name, nodeVersion }) {
+function createPackageTmpl({name, nodeVersion}) {
   return `{
     "private": true,
     "version": "0.0.0",
@@ -109,7 +107,7 @@ function createPackageTmpl({ name, nodeVersion }) {
   }`;
 }
 
-function createDockerTmpl({ name, nodeVersion }) {
+function createDockerTmpl({name, nodeVersion}) {
   return `FROM mhart/alpine-node:${nodeVersion}
 ENV PORT=80
 ENV NODE_ENV=production
@@ -165,10 +163,10 @@ export const channels = {}
 export const directives = {}`;
 }
 
-function install({ path }) {
+function install({path}) {
   return new Promise((resolve, reject) => {
     cd(path);
-    const installCmd = hasYarn() ? "yarn" : "npm install";
+    const installCmd = hasYarn() ? 'yarn' : 'npm install';
 
     exec(installCmd, (code, stdout, stderr) => {
       if (code !== 0) return reject(stderr);

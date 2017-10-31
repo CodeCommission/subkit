@@ -1,51 +1,57 @@
 #!/usr/bin/env node
 
-const NODE_ENV = process.env.NODE_ENV || 'development'
-const JWT_SECRET = process.env.JWT_SECRET || ''
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const JWT_SECRET = process.env.JWT_SECRET || '';
 
-const jwt = require('jsonwebtoken')
-const program = require('commander')
-const boxen = require('boxen')
-const chalk = require('chalk')
-const {writeSync} = require('clipboardy')
+const jwt = require('jsonwebtoken');
+const program = require('commander');
+const boxen = require('boxen');
+const chalk = require('chalk');
+const {writeSync} = require('clipboardy');
 
 program
   .option('-d, --decode [jwt]', 'Decode a JWT.')
   .option('-e, --encode [json]', 'Encode a JWT using payload in JSON format.')
   .option('-s, --secret [secret]', 'JWT secret.')
   .action(() => jwtEnDeCode(program.opts()))
-  .parse(process.argv)
+  .parse(process.argv);
 
-if(!program.args.length) jwtEnDeCode(program.opts())
+if (!program.args.length) jwtEnDeCode(program.opts());
 
 function jwtEnDeCode({decode, encode, secret = JWT_SECRET}) {
-  if(!secret) {
-    console.error(chalk.red(`JWT secret missing. Enter ${chalk.bold('subkit help jwt')} for more information.`))
-    process.exit(1)
+  if (!secret) {
+    console.error(
+      chalk.red(
+        `JWT secret missing. Enter ${chalk.bold(
+          'subkit help jwt'
+        )} for more information.`
+      )
+    );
+    process.exit(1);
   }
 
-  if(encode) {
-    const token = jwt.sign(encode, secret)
-    let message = chalk.green(`JWT: ${token}\n`)
+  if (encode) {
+    const token = jwt.sign(encode, secret);
+    let message = chalk.green(`JWT: ${token}\n`);
     if (process.stdout.isTTY) {
-      writeSync(token)
-      message += `${chalk.grey('\nJSON Web Token copied to clipboard.')}`
+      writeSync(token);
+      message += `${chalk.grey('\nJSON Web Token copied to clipboard.')}`;
     }
-    console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}))
+    console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}));
   }
-  if(decode) {
-    let message = ''
-    let verified = false
-    let payload = undefined
+  if (decode) {
+    let message = '';
+    let verified = false;
+    let payload = undefined;
     try {
-      payload = jwt.verify(decode, secret)
-      verified = Boolean(payload)
-    } catch(e){
-      verified = false
+      payload = jwt.verify(decode, secret);
+      verified = Boolean(payload);
+    } catch (e) {
+      verified = false;
     }
-    message += chalk.green(`Verified: ${verified}`)
-    message += chalk.green(`\nPayload:\n${JSON.stringify(payload, null, 2)}`)
-    console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}))
+    message += chalk.green(`Verified: ${verified}`);
+    message += chalk.green(`\nPayload:\n${JSON.stringify(payload, null, 2)}`);
+    console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}));
   }
-  process.exit(0)
+  process.exit(0);
 }

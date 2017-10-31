@@ -1,17 +1,17 @@
-import fetch from "isomorphic-fetch";
-import { equal } from "assert";
-import { start, stop } from "../lib";
+import fetch from 'isomorphic-fetch';
+import {equal} from 'assert';
+import {start, stop} from '../lib';
 
-describe("Subkit server integration tests", () => {
+describe('Subkit server integration tests', () => {
   let url = null;
 
   before(() => start({}).then(x => (url = x.url)));
   after(() => stop());
 
-  it("Response with 200", async () => {
+  it('Response with 200', async () => {
     const res = await fetch(url, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
       body: JSON.stringify({
         query: `{
           items {

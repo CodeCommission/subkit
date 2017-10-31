@@ -1,25 +1,25 @@
 #!/usr/bin/env node
 
-const NODE_ENV = process.env.NODE_ENV || "development";
+const NODE_ENV = process.env.NODE_ENV || 'development';
 const JWT_TOKEN = process.env.JWT_TOKEN;
 const URL = process.env.URL;
 
-const gql = require("graphql-tag");
-const program = require("commander");
-const boxen = require("boxen");
-const chalk = require("chalk");
-const { write } = require("clipboardy");
-const fetch = require("isomorphic-fetch");
-const EventSource = require("eventsource");
-const { print } = require("graphql/language/printer");
-const { isString, isObject } = require("lodash");
+const gql = require('graphql-tag');
+const program = require('commander');
+const boxen = require('boxen');
+const chalk = require('chalk');
+const {write} = require('clipboardy');
+const fetch = require('isomorphic-fetch');
+const EventSource = require('eventsource');
+const {print} = require('graphql/language/printer');
+const {isString, isObject} = require('lodash');
 
 program
-  .option("-u, --url [url]", "URL to GraphQL-API.")
-  .option("-q, --query [query]", "GraphQL query.")
-  .option("-o, --operation [name]", "GraphQL operation name.")
-  .option("-v, --variables [json]", "GraphQL query variables in JSON format.")
-  .option("-t, --token [token]", "JSON web authorization token.")
+  .option('-u, --url [url]', 'URL to GraphQL-API.')
+  .option('-q, --query [query]', 'GraphQL query.')
+  .option('-o, --operation [name]', 'GraphQL operation name.')
+  .option('-v, --variables [json]', 'GraphQL query variables in JSON format.')
+  .option('-t, --token [token]', 'JSON web authorization token.')
   .action(() => request(program.opts()))
   .parse(process.argv);
 
@@ -29,7 +29,7 @@ function request({
   url = URL,
   token = JWT_TOKEN,
   query,
-  operation = "",
+  operation = '',
   variables = null
 }) {
   let queryDef = null;
@@ -47,19 +47,19 @@ function request({
   const operationType = (((queryDef || {}).definitions || {})[0] || {})
     .operation;
 
-  if (operationType === "subscription") {
+  if (operationType === 'subscription') {
     let message = chalk.green(
       `GraphQL-API Subscription to ${chalk.bold(url)}\n\n`
     );
     message += chalk.green(
-      `Operation name: ${chalk.bold(operationName || "N/A")}`
+      `Operation name: ${chalk.bold(operationName || 'N/A')}`
     );
-    console.log(boxen(message, { padding: 1, borderColor: "gray", margin: 1 }));
+    console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}));
 
     const manager = subscriptionClient(`http://localhost:8080/subscriptions`, {
       token
     });
-    manager.subscribe({ operationName, query, variables }, (error, evt) => {
+    manager.subscribe({operationName, query, variables}, (error, evt) => {
       if (error) return chalk.red(console.error(err));
       console.log(
         chalk.green(
@@ -69,11 +69,11 @@ function request({
     });
   }
 
-  if (operationType !== "subscription") {
+  if (operationType !== 'subscription') {
     fetch(url, {
-      method: "post",
+      method: 'post',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
@@ -103,7 +103,7 @@ function request({
         message.message += chalk.green(`Response:\n`);
         message += chalk.gray(`${JSON.stringify(data.data, null, 2)}`);
         console.log(
-          boxen(message, { padding: 1, borderColor: "gray", margin: 1 })
+          boxen(message, {padding: 1, borderColor: 'gray', margin: 1})
         );
         process.exit(0);
       })
@@ -115,26 +115,26 @@ function request({
 }
 
 function subscriptionClient(url, options = {}) {
-  const { timeout = 1000, token } = options;
+  const {timeout = 1000, token} = options;
   const subscriptions = {};
 
   function subscribe(options, handler) {
-    const { query, variables, operationName, context } = options;
-    if (!query) throw new Error("Must provide `query` to subscribe.");
-    if (!handler) throw new Error("Must provide `handler` to subscribe.");
+    const {query, variables, operationName, context} = options;
+    if (!query) throw new Error('Must provide `query` to subscribe.');
+    if (!handler) throw new Error('Must provide `handler` to subscribe.');
     if (
       !isString(query) ||
       (operationName && !isString(operationName)) ||
       (variables && !isObject(variables))
     )
       throw new Error(
-        "Incorrect option types to subscribe. `subscription` must be a string, `operationName` must be a string, and `variables` must be an object."
+        'Incorrect option types to subscribe. `subscription` must be a string, `operationName` must be a string, and `variables` must be an object.'
       );
 
     return fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
         authorization: `Bearer ${token}`
       },
       body: JSON.stringify(options),
@@ -144,17 +144,17 @@ function subscriptionClient(url, options = {}) {
       .then(data => {
         const subId = data.subId;
         const evtSource = new EventSource(`${url}/${subId}`, {
-          headers: { authorization: `Bearer ${token}` }
+          headers: {authorization: `Bearer ${token}`}
         });
-        subscriptions[subId] = { options, handler, evtSource };
+        subscriptions[subId] = {options, handler, evtSource};
 
         evtSource.onmessage = e => {
           const message = JSON.parse(e.data);
           switch (message.type) {
-            case "SUBSCRIPTION_DATA":
+            case 'SUBSCRIPTION_DATA':
               subscriptions[subId].handler(null, message.data);
               break;
-            case "KEEPALIVE":
+            case 'KEEPALIVE':
               break;
           }
 
