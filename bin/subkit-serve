@@ -9,7 +9,6 @@ const HOST = process.env.HOST;
 const program = require('commander');
 const boxen = require('boxen');
 const chalk = require('chalk');
-const {write} = require('clipboardy');
 require('babel-polyfill');
 require('isomorphic-fetch');
 require('babel-register')({presets: ['env']});
@@ -61,10 +60,6 @@ function serve({
           message += `Complexity max : ${chalk.gray.bold(`${analysis}`)}\n`;
         message += `GraphiQL       : ${chalk.gray.bold(`${graphiql}`)}\n`;
         message += `\n${chalk.gray.bold(`${url}`)}\n\n`;
-        if (process.stdout.isTTY) {
-          write(url);
-          message += `${chalk.grey('Address copied to clipboard.')}`;
-        }
         console.log(
           boxen(message, {padding: 1, borderColor: 'gray', margin: 1})
         );
