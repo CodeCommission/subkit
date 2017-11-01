@@ -3,3 +3,4 @@ test
 node_modules
 npm-debug.log
 metric.json
+*.gql

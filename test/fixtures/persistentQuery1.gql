@@ -1,6 +1,0 @@
-query persistentQuery1 {
-  items(take: 1) {
-    id
-    email
-  }
-}

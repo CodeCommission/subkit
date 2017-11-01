@@ -27,6 +27,7 @@ Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTIN
     * [Expand the GraphQL-Schema](advanced-queries.md#expand-the-graphql-schema)
     * [Implement the resolver functions](advanced-queries.md#implement-the-resolver-function)
     * [Execute a GraphQL query](advanced-queries.md#execute-a-graphql-query)
+    * [Prepare and usage of persistent GraphQL query](advanced-queries.md#persistent-graphql-query)
 * [Clients](clients.md)
   * [cURL](clients.md#curl)
   * [HTTP-Fetch](clients.md#http-fetch)
@@ -51,7 +52,7 @@ Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTIN
 * Error Handling (coming soon)
   * Domain errors
   * Infrastructure errors
-* Instrumentation and Logging (coming soon)
+* Instrumentation - Tracing and Logging (coming soon)
 * Testing (coming soon)
 * Batching and Caching (coming soon)
 * Include SubKit GraphQL-Server as a Module (coming soon)
