@@ -59,7 +59,7 @@ function serve({
         if (analysis)
           message += `Complexity max : ${chalk.gray.bold(`${analysis}`)}\n`;
         message += `GraphiQL       : ${chalk.gray.bold(`${graphiql}`)}\n`;
-        message += `\n${chalk.gray.bold(`${url}`)}\n\n`;
+        message += `\n${chalk.gray.bold(`${url}`)}`;
         console.log(
           boxen(message, {padding: 1, borderColor: 'gray', margin: 1})
         );

@@ -23,9 +23,11 @@ input ItemInput {
 }
 
 type Mutation {
+  # Insert or update an item
   upsertItem(input: ItemInput!): Item
 }
 
 type Subscription {
+  # Emitted event on item changes
   onItemUpserted: Item
 }

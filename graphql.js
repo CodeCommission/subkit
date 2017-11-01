@@ -14,8 +14,8 @@ export const resolvers = {
     }
   },
   Subscription: {
-    onItemUpserted: (source, args, context, info) =>
-      context.loaders.items.find(x => x.id == source.id)
+    onItemUpserted: async (source, args, context, info) =>
+      (await context.loaders.items()).find(x => x.id == source.id)
   }
 };
 
