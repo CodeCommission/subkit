@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "3.8.2",
+  "version": "3.8.3",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -40,7 +40,6 @@
     "body-parser": "^1.18.2",
     "boxen": "^1.2.1",
     "chalk": "^2.1.0",
-    "clipboardy": "^1.1.4",
     "commander": "^2.11.0",
     "cors": "^2.8.4",
     "es6-template-strings": "^2.0.1",

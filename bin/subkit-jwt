@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const program = require('commander');
 const boxen = require('boxen');
 const chalk = require('chalk');
-const {writeSync} = require('clipboardy');
 
 program
   .option('-d, --decode [jwt]', 'Decode a JWT.')
@@ -33,10 +32,6 @@ function jwtEnDeCode({decode, encode, secret = JWT_SECRET}) {
   if (encode) {
     const token = jwt.sign(encode, secret);
     let message = chalk.green(`JWT: ${token}\n`);
-    if (process.stdout.isTTY) {
-      writeSync(token);
-      message += `${chalk.grey('\nJSON Web Token copied to clipboard.')}`;
-    }
     console.log(boxen(message, {padding: 1, borderColor: 'gray', margin: 1}));
   }
   if (decode) {
