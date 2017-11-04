@@ -22,6 +22,11 @@ program
   .option('-m, --mocked', 'Mock resolver data.')
   .option('-a, --analysis [int]', 'Enable query complexity analysis.')
   .option('-e, --extentions', 'Enable query extentions.')
+  .option('-l, --log-format [text]', 'Set log output format [text|json].')
+  .option(
+    '-y, --log-style [text]',
+    'Set log output style [none|error|short|extended].'
+  )
   .action(() => serve(program.opts()))
   .parse(process.argv);
 
@@ -35,8 +40,24 @@ function serve({
   mocked = Boolean(MOCKED),
   secret = JWT_SECRET,
   graphiql = false,
-  extentions = false
+  extentions = false,
+  logStyle = 'extended',
+  logFormat = 'json'
 }) {
+  if (!['none', 'error', 'short', 'extended'].includes(logStyle)) {
+    console.error(
+      chalk.red(
+        'Unsupported log style. Only [none|error|short|extended] are allowed.'
+      )
+    );
+    process.exit(1);
+  }
+  if (!['text', 'json'].includes(logFormat)) {
+    console.error(
+      chalk.red('Unsupported log format. Only [text|json] are allowed.')
+    );
+    process.exit(1);
+  }
   require('../lib')
     .start({
       port,
@@ -45,19 +66,23 @@ function serve({
       secret,
       graphiql,
       analysis: parseInt(analysis),
-      extentions
+      extentions,
+      logStyle,
+      logFormat
     })
     .then(({url, isSecure}) => {
       if (!silent) {
         let message = `${chalk.green(`Listening (${NODE_ENV})`)}\n\n`;
         message += `JWT secured    : ${chalk.gray.bold(`${isSecure}`)}\n`;
+        message += `Log style      : ${chalk.gray.bold(`${logStyle}`)}\n`;
+        message += `Log format     : ${chalk.gray.bold(`${logFormat}`)}\n`;
         message += `Extentions     : ${chalk.gray.bold(`${extentions}`)}\n`;
         message += `Mock responses : ${chalk.gray.bold(`${mocked}`)}\n`;
         message += `Query analysis : ${chalk.gray.bold(
           `${Boolean(analysis)}`
         )}\n`;
         if (analysis)
-          message += `Complexity max : ${chalk.gray.bold(`${analysis}`)}\n`;
+          message += `Max. Score     : ${chalk.gray.bold(`${analysis}`)}\n`;
         message += `GraphiQL       : ${chalk.gray.bold(`${graphiql}`)}\n`;
         message += `\n${chalk.gray.bold(`${url}`)}`;
         console.log(
@@ -66,15 +91,18 @@ function serve({
       }
     })
     .catch(e => {
-      console.error(chalk.red('An unexpected error occurred.'));
-      console.error(
-        JSON.stringify({
-          message: e.message,
-          error: e,
-          stack: e.stack,
-          type: 'Error'
-        })
-      );
+      if (app.logStyle !== 'none') {
+        if (logFormat === 'text') return console.error(chalk.red(e.message));
+        if (logFormat === 'json')
+          return console.error(
+            JSON.stringify({
+              message: e.message,
+              error: e,
+              stack: e.stack,
+              type: 'Error'
+            })
+          );
+      }
       process.exit(1);
     });
 }
