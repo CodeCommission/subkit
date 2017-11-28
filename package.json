@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "3.9.0",
+  "version": "3.9.1",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "body-parser": "^1.18.2",
     "boxen": "^1.2.1",
     "chalk": "^2.1.0",
-    "commander": "^2.11.0",
+    "commander": "^2.12.2",
     "cors": "^2.8.4",
     "es6-template-strings": "^2.0.1",
     "eventsource": "^1.0.5",
@@ -53,9 +53,9 @@
     "express-jwt": "^5.3.0",
     "fs-extra": "^4.0.2",
     "graphql": "^0.11.7",
-    "graphql-subscriptions": "^0.5.4",
+    "graphql-subscriptions": "^0.5.5",
     "graphql-tag": "^2.5.0",
-    "graphql-tools": "^2.5.1",
+    "graphql-tools": "^2.9.0",
     "graphql-type-json": "^0.1.4",
     "isomorphic-fetch": "^2.2.1",
     "json-query": "^2.2.2",
