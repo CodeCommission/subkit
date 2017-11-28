@@ -11,8 +11,8 @@ const hasYarn = () => Boolean(which('yarn'));
 
 program
   .arguments('<name>')
-  .option('-d, --docker', 'Include dockerfile (mhart/alpine-node)')
-  .option('-n, --node [version]', 'NodeJS 6/7/8 (mhart/alpine-node)')
+  .option('-d, --docker', 'Include dockerfile')
+  .option('-n, --node [version]', 'NodeJS 6/8 [8]')
   .action(name =>
     create({name, docker: program.docker, nodeVersion: program.node})
   )
@@ -20,7 +20,7 @@ program
 
 if (!program.args.length) create({});
 
-function create({name = '.', docker, nodeVersion = '6'}) {
+function create({name = '.', docker, nodeVersion = '8'}) {
   if (!name) {
     console.error(chalk.red('Enter a project name.'));
     process.exit(1);
@@ -109,6 +109,8 @@ function createPackageTmpl({name, nodeVersion}) {
 
 function createDockerTmpl({name, nodeVersion}) {
   return `FROM mhart/alpine-node:${nodeVersion}
+STOPSIGNAL SIGINT
+${nodeVersion == 6 ? '' : 'RUN apk add --no-cache dumb-init'}
 ENV PORT=80
 ENV NODE_ENV=production
 EXPOSE 80
@@ -118,7 +120,11 @@ WORKDIR /app
 COPY package.json /app
 RUN npm install --production
 COPY . /app
-CMD ["npm", "start"]`;
+${
+    nodeVersion == 6
+      ? 'CMD ["npm", "start"]'
+      : 'CMD ["dumb-init", "npm", "start"]'
+  }`;
 }
 
 function createSchemaTmpl() {
