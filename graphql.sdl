@@ -9,12 +9,18 @@ type Item {
   value: Value
 }
 
+type Viewer {
+  id: ID
+  items(take: Int, skip: Int): [Item]
+}
+
 # Root queries
-type  Query {
+type Query {
   # Item by ID
   item(id: ID!): Item
   # All items
   items(take: Int, skip: Int): [Item] @complexity(multiplier: "take") @cacheControl(maxAge: 30)
+  viewer(id: ID): Viewer
 }
 
 input ItemInput {

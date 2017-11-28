@@ -4,12 +4,17 @@
 
 SubKit GraphQL-Server is built with the following principles in mind:
 
-* **Simplicity** by keeping things simple, SubKit GraphQL-Server is easier to use, easier to contribute to, and more secure
-* **Performance** SubKit GraphQL-Server is well-tested and production-ready - no modifications needed
-* **Experience** Front-end / Contract-Driven approach - designed and developed to make front-end and back-end development as efficient as possible.
-* **Build-In** All important tools to create and manage GraphQL-APIs are available via CLI.
+* **Simplicity** by keeping things simple, SubKit GraphQL-Server is easier to
+  use, easier to contribute to, and more secure
+* **Performance** SubKit GraphQL-Server is well-tested and production-ready - no
+  modifications needed
+* **Experience** Front-end / Contract-Driven approach - designed and developed
+  to make front-end and back-end development as efficient as possible.
+* **Build-In** All important tools to create and manage GraphQL-APIs are
+  available via CLI.
 
-Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTING](../CONTRIBUTING.md) and take a look at the [ROADMAP](ROADMAP.md).
+Anyone is welcome to contribute to SubKit GraphQL-Server, just read
+[CONTRIBUTING](../CONTRIBUTING.md) and take a look at the [ROADMAP](ROADMAP.md).
 
 * [Guide to Getting Started](getting-started.md)
   * [Installation](getting-started.md#installation)
@@ -42,6 +47,10 @@ Anyone is welcome to contribute to SubKit GraphQL-Server, just read [CONTRIBUTIN
   * [Use Publish/Subscribe programmatically](subscriptions.md#use-publish/subscribe-programmatically)
 * [Directives](directives.md)
   * [Build-In](directives.md#subkit-build-in)
+    * [@mock](directives.md#@mock)
+    * [@fetchJSON](directives.md#@fetchJSON)
+    * [@publish](directives.md#@publish)
+    * [@contextify](directives.md#@contextify)
   * [Programming Custom-Directives](directives.md#programming-custom-directives)
 * [JSON Web Token (JWT) Authentication](jwt-auth.md)
   * [Encode a JSON Web Token](jwt-auth.md#encode-a-json-web-token)

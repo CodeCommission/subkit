@@ -1,9 +1,15 @@
 # Directives
 
 * [Build-In](#subkit-build-in)
+  * [@mock](#@mock)
+  * [@fetchJSON](#@fetchJSON)
+  * [@publish](#@publish)
+  * [@contextify](#@contextify)
 * [Programming Custom-Directives](#programming-custom-directives)
 
-GraphQL directives are an extremely powerful mechanism to customize query responses and execution behavior in a declarative way. SubKit GraphQL-Server provides 3 kinds of GraphQL schema directives:
+GraphQL directives are an extremely powerful mechanism to customize query
+responses and execution behavior in a declarative way. SubKit GraphQL-Server
+provides 3 kinds of GraphQL schema directives:
 
 * [GraphQL specification](http://facebook.github.io/graphql/October2016/#sec-Type-System.Directives)
   * @skip
@@ -15,6 +21,11 @@ GraphQL directives are an extremely powerful mechanism to customize query respon
 * [Custom directives for GraphQL queries](#custom-directives-for-graphql-queries)
 
 ## SubKit Build-In
+
+* [@mock](#@mock)
+* [@fetchJSON](#@fetchJSON)
+* [@publish](#@publish)
+* [@contextify](#@contextify)
 
 ### @mock
 
@@ -31,7 +42,12 @@ query loadItem {
   item(id: "mikebild") {
     id
     email @mock(value: "go@linklet.run")
-    picture @mock(value: {link: "https://www.gravatar.com/avatar/ddec25b3a317217b97ffc45a62ae8980"}) {
+    picture
+      @mock(
+        value: {
+          link: "https://www.gravatar.com/avatar/ddec25b3a317217b97ffc45a62ae8980"
+        }
+      ) {
       link
     }
   }
@@ -66,10 +82,13 @@ query loadItem {
 
 Publish an event to subscriptions by channelName.
 
-`@@fetchJSON(url: String!, jsonQuery: String, timeout: Int)`
+`@fetchJSON(url: String!, jsonQuery: String, timeout: Int)`
 
-* **url** - [ES6 template strings](https://www.npmjs.com/package/es6-template-strings) provided URL to fetch JSON data.
-* **jsonQuery** - [JSON Query](https://www.npmjs.com/package/json-query) to transform the `@fetchJSON` JSON response.
+* **url** -
+  [ES6 template strings](https://www.npmjs.com/package/es6-template-strings)
+  provided URL to fetch JSON data.
+* **jsonQuery** - [JSON Query](https://www.npmjs.com/package/json-query) to
+  transform the `@fetchJSON` JSON response.
 * **timeout** - Set a network timeout in ms.
 
 #### @fetchJSON examples
@@ -82,7 +101,12 @@ query loadItem {
     picture @mock(value: {link: "https://subkit.io"}) {
       link @mock(value: "https://github.com/codecommission/subkit")
     }
-    profile @fetchJSON(url: "https://de.gravatar.com/${id}.json", jsonQuery: "entry[0]", timeout: 10) {
+    profile
+      @fetchJSON(
+        url: "https://de.gravatar.com/${id}.json"
+        jsonQuery: "entry[0]"
+        timeout: 10
+      ) {
       id
       profileUrl
     }
@@ -97,15 +121,18 @@ Publish an event to subscriptions by channelName.
 `@publish(channelName: String!, payload: JSON)`
 
 * **channelName** - Name of subscription channel of the published event.
-* **payload** - Mock payload data of event, otherwise input data is the payload of the published event.
+* **payload** - Mock payload data of event, otherwise input data is the payload
+  of the published event.
 
 #### @publish examples
 
-Publish event to **itemsChannel** with **mock payload** after successful mutation.
+Publish event to **itemsChannel** with **mock payload** after successful
+mutation.
 
 ```graphql
 mutation upsertItem {
-  upsertItem(input: {id: "mikebild", email: "mike@mikebild.com"}) @publish(channelName: "itemsChannel", payload: {id: "mikebild"}) {
+  upsertItem(input: {id: "mikebild", email: "mike@mikebild.com"})
+    @publish(channelName: "itemsChannel", payload: {id: "mikebild"}) {
     id
     email
   }
@@ -123,6 +150,37 @@ mutation upsertItem {
 }
 ```
 
+### @contextify
+
+Temporary store field data in context and use it later in the execution process.
+
+`@contextify`
+
+#### @contextify examples
+
+Contextify the result of viewer field to use it in subordinate field resolvers.
+
+```graphql
+query ItemsByViewer {
+  viewer(id: "go@subkit.io") @contextify {
+    items {
+      id
+    }
+  }
+}
+```
+
+```javascript
+export const resolvers = {
+  Viewer: {
+    items: async (parent, args, context, info) => {
+      const items = await context.loaders.items();
+      return items.filter(x => x.email === context.viewer.id);
+    }
+  }
+};
+```
+
 ## Programming Custom-Directives
 
 ### `@toUpperCase`
@@ -130,17 +188,18 @@ mutation upsertItem {
 Implement a custom `@toUpperCase` directive without arguments.
 
 ```javascript
-const {DirectiveLocation} = require('graphql/type/directives')
+const {DirectiveLocation} = require('graphql/type/directives');
 
 export const directives = {
   // ...
   toUpperCase: {
     description: 'Transform result to uppercase.',
     locations: [DirectiveLocation.FIELD],
-    resolve: (resolve, parent, args, ctx, info) => resolve().then(result => result.toUpperCase()),
-  },
+    resolve: (resolve, parent, args, ctx, info) =>
+      resolve().then(result => result.toUpperCase())
+  }
   // ...
-}
+};
 ```
 
 GraphQL query using `@toUpperCase` directive.
@@ -159,20 +218,29 @@ query loadItem {
 Implement a custom `@toFormatString` directive with arguments.
 
 ```javascript
-const {GraphQLString, GraphQLNonNull} = require('graphql')
-const {DirectiveLocation} = require('graphql/type/directives')
-const format = require('es6-template-strings')
+const {GraphQLString, GraphQLNonNull} = require('graphql');
+const {DirectiveLocation} = require('graphql/type/directives');
+const format = require('es6-template-strings');
 
 export const directives = {
   // ...
   toFormatString: {
     description: 'Transform result to ES6 template string.',
     locations: [DirectiveLocation.FIELD],
-    args: {template: {type: new GraphQLNonNull(GraphQLString)}, parent: {type: GraphQLBoolean}},
-    resolve: (resolve, parent, args, ctx, info) => resolve().then(result => format(args.template, args.parent ? parent : {[`${info.fieldName}`]: result})),
-  },
+    args: {
+      template: {type: new GraphQLNonNull(GraphQLString)},
+      parent: {type: GraphQLBoolean}
+    },
+    resolve: (resolve, parent, args, ctx, info) =>
+      resolve().then(result =>
+        format(
+          args.template,
+          args.parent ? parent : {[`${info.fieldName}`]: result}
+        )
+      )
+  }
   // ...
-}
+};
 ```
 
 GraphQL query using `@toFormatString` directive.
