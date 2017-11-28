@@ -5,7 +5,7 @@ import {start, stop} from '../lib';
 describe('Subkit server integration tests', () => {
   let url = null;
 
-  before(() => start({}).then(x => (url = x.url)));
+  before(() => start({logStyle: 'none'}).then(x => (url = x.url)));
   after(() => stop());
 
   it('Response with 200', async () => {

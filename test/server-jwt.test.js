@@ -5,7 +5,9 @@ import {start, stop} from '../lib';
 describe('Subkit server JWT integration tests', () => {
   let url = null;
 
-  before(() => start({secret: 'demo'}).then(x => (url = x.url)));
+  before(() =>
+    start({secret: 'demo', logStyle: 'none'}).then(x => (url = x.url))
+  );
   after(() => stop());
 
   it('Response with 401', async () => {
@@ -16,7 +18,7 @@ describe('Subkit server JWT integration tests', () => {
       },
       body: JSON.stringify({
         query: `{
-          items{
+          items {
             id
           }
         }`,
@@ -38,7 +40,7 @@ describe('Subkit server JWT integration tests', () => {
       },
       body: JSON.stringify({
         query: `{
-          items{
+          items {
             id
           }
         }`,

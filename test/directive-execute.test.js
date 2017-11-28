@@ -4,7 +4,7 @@ import {start, stop} from '../lib';
 describe('SubKit @execute directive', () => {
   let url = null;
 
-  before(() => start({}).then(x => (url = x.url)));
+  before(() => start({logStyle: 'none'}).then(x => (url = x.url)));
   after(() => stop());
 
   it('Should execute a script', async () => {

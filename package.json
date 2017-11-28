@@ -24,8 +24,7 @@
       "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
     "start":
       "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
-    "test":
-      "mocha --require babel-polyfill --require babel-register 2>/dev/null",
+    "test": "mocha --require babel-polyfill --require babel-register",
     "commit": "git-cz"
   },
   "babel": {

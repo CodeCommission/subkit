@@ -14,8 +14,10 @@ describe('SubKit persistent query', () => {
   before(() =>
     writeFile(
       persistentQueryPath,
-      `query ${persistentQueryOperationName}($take: Int) {items(take: $take) {id}}`
-    ).then(() => start({}).then(x => (url = x.url)))
+      `query ${
+        persistentQueryOperationName
+      }($take: Int) {items(take: $take) {id}}`
+    ).then(() => start({logStyle: 'none'}).then(x => (url = x.url)))
   );
   after(() => remove(persistentQueryPath).then(stop));
 
@@ -37,7 +39,9 @@ describe('SubKit persistent query', () => {
       method: 'POST',
       headers: {'content-type': 'application/json'},
       body: JSON.stringify({
-        query: `query ${persistentQueryOperationName}($take: Int) {items(take: $take) {id}}`,
+        query: `query ${
+          persistentQueryOperationName
+        }($take: Int) {items(take: $take) {id}}`,
         variables: {take: 10},
         operationName: persistentQueryOperationName
       })
