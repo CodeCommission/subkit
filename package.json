@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "3.8.5",
+  "version": "3.9.0",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -16,19 +16,24 @@
   "bin": {
     "subkit": "./bin/subkit"
   },
-  "keywords": ["http", "graphql", "subscription", "directive", "server"],
+  "keywords": [
+    "http",
+    "graphql",
+    "subscription",
+    "directive",
+    "server"
+  ],
   "scripts": {
-    "dev":
-      "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000 --extentions",
-    "dev:mocked":
-      "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
-    "start":
-      "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
+    "dev": "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000 --extentions",
+    "dev:mocked": "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
+    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
     "test": "mocha --require babel-polyfill --require babel-register",
     "commit": "git-cz"
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   },
   "dependencies": {
     "JSONStream": "^1.3.1",
