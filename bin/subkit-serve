@@ -41,7 +41,7 @@ function serve({
   secret = JWT_SECRET,
   graphiql = false,
   extentions = false,
-  logStyle = 'extended',
+  logStyle = 'error',
   logFormat = 'json'
 }) {
   if (!['none', 'error', 'short', 'extended'].includes(logStyle)) {

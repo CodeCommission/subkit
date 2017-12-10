@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "3.10.0",
+  "version": "4.0.0",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -25,8 +25,9 @@
   ],
   "scripts": {
     "dev": "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000 --extentions",
+    "dev:jwt": "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000 --extentions",
     "dev:mocked": "nodemon --ext gql,sdl,sdle,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
-    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000",
+    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000 --log-format json --log-style extended",
     "test": "mocha --require babel-polyfill --require babel-register",
     "test:watch": "mocha --watch --require babel-polyfill --require babel-register",
     "commit": "git-cz"
@@ -66,8 +67,8 @@
     "morgan-json": "^1.1.0",
     "node-version": "^1.1.0",
     "shelljs": "^0.7.8",
-    "subkit-graphiql": "^0.1.6",
-    "subscriptions-transport-sse": "^0.6.4",
+    "subkit-graphiql": "^0.2.1",
+    "subscriptions-transport-sse": "^0.7.8",
     "through": "^2.3.8",
     "update-notifier": "^2.3.0"
   },
