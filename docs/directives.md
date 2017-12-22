@@ -1,13 +1,23 @@
 # Directives
 
 * [Build-In](#subkit-build-in)
-  * [@mock](#mock)
-  * [@fetchJSON / @getJSON](#fetchJSON-getJSON)
+  * [@constant](#constant)
+  * [@getJSON](#getJSON)
   * [@postJSON](#postJSON)
   * [@putJSON](#putJSON)
   * [@deleteJSON](#deleteJSON)
   * [@publish](#publish)
+  * [@subscribe](#subscribe)
   * [@contextify](#contextify)
+  * [@map](#map)
+  * [@mapInput](#mapInput)
+  * [@paged](#paged)
+  * [@log](#log)
+  * [@execute](#execute)
+  * [@spawn](#spawn)
+  * [@eventsource](#eventsource)
+  * [@cacheControl](#cacheControl)
+  * [@complexity](#complexity)
 * [Programming Custom-Directives](#programming-custom-directives)
 
 GraphQL directives are an extremely powerful mechanism to customize query
@@ -18,40 +28,40 @@ provides 3 kinds of GraphQL schema directives:
   * @skip
   * @include
 * [SubKit build-in](#subkit-build-in)
-  * @mock
+  * @constant
   * @fetchJSON
   * @publish
 * [Custom directives for GraphQL queries](#custom-directives-for-graphql-queries)
 
 ## SubKit Build-In
 
-* [@mock](#mock)
-* [@fetchJSON / @getJSON](#fetchJSON-getJSON)
+* [@constant](#constant)
+* [@getJSON](#getJSON)
 * [@postJSON](#postJSON)
 * [@putJSON](#putJSON)
 * [@deleteJSON](#deleteJSON)
 * [@publish](#publish)
 * [@contextify](#contextify)
 
-### mock
+### constant
 
-Mock field data.
+Constant field data as resolver result.
 
 ```graphql
-@mock(value: JSON)
+@constant(value: JSON)
 ```
 
-* **value** - Mock data to result in query.
+* **value** - constant data to result in query.
 
-### mock examples
+### constant examples
 
 ```graphql
 query loadItem {
   item(id: "johndoe") {
     id
-    email @mock(value: "go@linklet.run")
+    email @constant(value: "go@linklet.run")
     picture
-      @mock(
+      @constant(
         value: {
           link: "https://www.gravatar.com/avatar/ddec25b3a317217b97ffc45a62ae8980"
         }
@@ -66,7 +76,7 @@ query loadItem {
 query loadItem {
   item(id: "johndoe") {
     id
-    email @mock(value: "go@linklet.run")
+    email @constant(value: "go@linklet.run")
     picture {
       link
     }
@@ -78,41 +88,41 @@ query loadItem {
 query loadItem {
   item(id: "johndoe") {
     id
-    email @mock(value: "go@subkit.io")
-    picture @mock(value: {link: "https://subkit.io"}) {
-      link @mock(value: "https://github.com/codecommission/subkit")
+    email @constant(value: "go@subkit.io")
+    picture @constant(value: {link: "https://subkit.io"}) {
+      link @constant(value: "https://github.com/codecommission/subkit")
     }
   }
 }
 ```
 
-### fetchJSON / getJSON
+### getJSON
 
-Fetch / get data from URL as JSON. Executable on fields on client- and
+HTTP GET (HTTP header pass-through) from URL as JSON. Executable on fields on client- and
 server-side.
 
 ```graphql
-@fetchJSON(url: String!, jsonQuery: String, timeout: Int)
-@getJSON(url: String!, jsonQuery: String, timeout: Int)
+@getJSON(url: String!, jsonQuery: String, timeout: Int, headers: JSON, catch: Boolean)
 ```
 
 * **url** -
-  [ES6 template strings](https://www.npmjs.com/package/es6-template-strings)
+  [ES6 template string](https://www.npmjs.com/package/es6-template-strings)
   provided URL to fetch JSON data.
 * **jsonQuery** - [JSON Query](https://www.npmjs.com/package/json-query) to
-  transform the `@fetchJSON` JSON response.
+  transform the JSON response.
 * **timeout** - Set a network timeout in ms.
-* **jwt** - Set to "pass" for JWT passthrough, else given JWT content.
+* **headers** - Set additional HTTP headers.
+* **catch** - Enable error catching as null result.
 
-#### fetchJSON / getJSON examples
+#### getJSON examples
 
 ```graphql
 query loadItem {
   item(id: "johndoe") {
     id
-    email @mock(value: "go@subkit.io")
-    picture @mock(value: {link: "https://subkit.io"}) {
-      link @mock(value: "https://github.com/codecommission/subkit")
+    email @constant(value: "go@subkit.io")
+    picture @constant(value: {link: "https://subkit.io"}) {
+      link @constant(value: "https://github.com/codecommission/subkit")
     }
     profile
       @fetchJSON(
@@ -129,20 +139,21 @@ query loadItem {
 
 ### postJSON
 
-HTTP POST input data (args.input) to URL using JSON. Executable on mutation
+HTTP POST (HTTP header pass-through) input data (args.input) to URL using JSON. Executable on mutation
 field on client- and server-side.
 
 ```graphql
-@postJSON(url: String!, jsonQuery: String, timeout: Int)
+@postJSON(url: String!, jsonQuery: String, timeout: Int, headers: JSON, catch: Boolean)
 ```
 
 * **url** -
-  [ES6 template strings](https://www.npmjs.com/package/es6-template-strings)
+  [ES6 template string](https://www.npmjs.com/package/es6-template-strings)
   provided URL to fetch JSON data.
 * **jsonQuery** - [JSON Query](https://www.npmjs.com/package/json-query) to
-  transform the `@fetchJSON` JSON response.
+  transform the JSON response.
 * **timeout** - Set a network timeout in ms.
-* **jwt** - Set to "pass" for JWT passthrough, else given JWT content.
+* **headers** - Set additional HTTP headers.
+* **catch** - Enable error catching as null result.
 
 #### postJSON examples
 
@@ -170,20 +181,21 @@ type Mutation {
 
 ### putJSON
 
-HTTP PUT input data (args.input) to URL using JSON. Executable on mutation field
+HTTP PUT (HTTP header pass-through) input data (args.input) to URL using JSON. Executable on mutation field
 on client- and server-side.
 
 ```graphql
-@putJSON(url: String!, jsonQuery: String, timeout: Int)
+@putJSON(url: String!, jsonQuery: String, timeout: Int, headers: JSON, catch: Boolean)
 ```
 
 * **url** -
-  [ES6 template strings](https://www.npmjs.com/package/es6-template-strings)
+  [ES6 template string](https://www.npmjs.com/package/es6-template-strings)
   provided URL to fetch JSON data.
 * **jsonQuery** - [JSON Query](https://www.npmjs.com/package/json-query) to
-  transform the `@fetchJSON` JSON response.
+  transform the JSON response.
 * **timeout** - Set a network timeout in ms.
-* **jwt** - Set to "pass" for JWT passthrough, else given JWT content.
+* **headers** - Set additional HTTP headers.
+* **catch** - Enable error catching as null result.
 
 #### putJSON examples
 
@@ -211,20 +223,21 @@ type Mutation {
 
 ### deleteJSON
 
-HTTP DELETE input id (args.id) to URL. Executable on mutation field on client-
+HTTP DELETE (HTTP header pass-through) input id (args.id) to URL. Executable on mutation field on client-
 and server-side.
 
 ```graphql
-@deleteJSON(url: String!, jsonQuery: String, timeout: Int)
+@deleteJSON(url: String!, jsonQuery: String, timeout: Int, headers: JSON, catch: Boolean)
 ```
 
 * **url** -
-  [ES6 template strings](https://www.npmjs.com/package/es6-template-strings)
+  [ES6 template string](https://www.npmjs.com/package/es6-template-strings)
   provided URL to fetch JSON data.
 * **jsonQuery** - [JSON Query](https://www.npmjs.com/package/json-query) to
   transform the `@fetchJSON` JSON response.
 * **timeout** - Set a network timeout in ms.
-* **jwt** - Set to "pass" for JWT passthrough, else given JWT content.
+* **headers** - Set additional HTTP headers.
+* **catch** - Enable error catching as null result.
 
 #### deleteJSON examples
 
@@ -252,23 +265,23 @@ type Mutation {
 
 ### publish
 
-Publish an event to subscriptions by channelName.
+Publish an event to subscriptions by topic.
 
-`@publish(channelName: String!, payload: JSON)`
+`@publish(topic: String!, payload: JSON)`
 
-* **channelName** - Name of subscription channel of the published event.
-* **payload** - Mock payload data of event, otherwise input data is the payload
+* **topic** - Name of subscription channel of the published event.
+* **payload** - constant payload data of event, otherwise input data is the payload
   of the published event.
 
 #### publish examples
 
-Publish event to **itemsChannel** with **mock payload** after successful
+Publish event to **itemsChannel** with **constant payload** after successful
 mutation.
 
 ```graphql
 mutation upsertItem {
   upsertItem(input: {id: "johndoe", email: "johndoe@example.com"})
-    @publish(channelName: "itemsChannel", payload: {id: "johndoe"}) {
+    @publish(topic: "itemsChannel", payload: {id: "johndoe"}) {
     id
     email
   }
@@ -279,7 +292,7 @@ Publish event to itemsChannel with input payload after successful mutation.
 
 ```graphql
 mutation upsertItem {
-  upsertItem(input: {id: "johndoe", email: "johndoe@example.com"}) @publish(channelName: "itemsChannel"}) {
+  upsertItem(input: {id: "johndoe", email: "johndoe@example.com"}) @publish(topic: "itemsChannel"}) {
     id
     email
   }
@@ -317,7 +330,7 @@ export const resolvers = {
 };
 ```
 
-## Programming Custom-Directives
+## Programming custom directives
 
 ### toUpperCase
 

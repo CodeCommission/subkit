@@ -31,7 +31,7 @@ describe('SubKit @execute directive', () => {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         query: `query demo($id: ID!) {
-          item(id: $id) @execute(cmd: "test/fixtures/fetch-item \${variables.id} '\${JSON.stringify({variables})}'") {
+          item(id: $id) @execute(cmd: "test/fixtures/fetch-item \${context.variables.id} '\${JSON.stringify({variables: context.variables})}'") {
             id
           }
         }`,
