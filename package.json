@@ -1,6 +1,6 @@
 {
   "name": "subkit",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "description": "GraphQL APIs made fast and easy.",
   "repository": {
     "type": "git",
@@ -16,26 +16,23 @@
   "bin": {
     "subkit": "./bin/subkit"
   },
-  "keywords": [
-    "http",
-    "graphql",
-    "subscription",
-    "directive",
-    "server"
-  ],
+  "keywords": ["http", "graphql", "subscription", "directive", "server"],
   "scripts": {
-    "dev": "nodemon --ext gql,sdl,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000 --extentions",
-    "dev:jwt": "nodemon --ext gql,sdl,js --exec ./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000 --extentions",
-    "dev:mocked": "nodemon --ext gql,sdl,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
-    "start": "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000 --log-format json --log-style extended",
+    "dev":
+      "nodemon --ext gql,sdl,js --exec ./bin/subkit serve --port 8080 --graphiql --analysis 1000 --extentions",
+    "dev:jwt":
+      "nodemon --ext gql,sdl,js --exec ./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000 --extentions",
+    "dev:mocked":
+      "nodemon --ext gql,sdl,js --exec ./bin/subkit serve --port 8080 --mocked --graphiql --analysis 1000",
+    "start":
+      "./bin/subkit serve --port 8080 --secret SuperSecret --graphiql --analysis 1000 --log-format json --log-style extended",
     "test": "mocha --require babel-polyfill --require babel-register",
-    "test:watch": "mocha --watch --require babel-polyfill --require babel-register",
+    "test:watch":
+      "mocha --watch --require babel-polyfill --require babel-register",
     "commit": "git-cz"
   },
   "babel": {
-    "presets": [
-      "env"
-    ]
+    "presets": ["env"]
   },
   "dependencies": {
     "JSONStream": "^1.3.1",
@@ -70,7 +67,7 @@
     "object-hash": "^1.2.0",
     "shelljs": "^0.7.8",
     "subkit-graphiql": "^0.2.5",
-    "subscriptions-transport-sse": "^0.9.0",
+    "subscriptions-transport-sse": "^0.9.1",
     "dataloader": "^1.3.0",
     "through": "^2.3.8",
     "update-notifier": "^2.3.0",
